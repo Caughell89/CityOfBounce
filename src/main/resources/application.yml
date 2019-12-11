@@ -6,9 +6,9 @@ spring:
 #    username: root
 #    password: =Heat4044
     
-    url: jdbc:mysql://aanudoqa96cx04.c5eyzbbk7dg1.us-east-2.rds.amazonaws.com:3306/ebdb
-    username: Caughell89
-    password: =Heat4044
+    url: jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_5d9109e69eca09f
+    username: b710639b29086c
+    password: 31dfd9aa
     
     
   jpa:
