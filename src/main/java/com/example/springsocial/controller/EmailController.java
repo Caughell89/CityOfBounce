@@ -25,6 +25,7 @@ public class EmailController {
     @RequestMapping(value = "{email}/sendRegistrationEmail")
     public Company sendEmail(@PathVariable String email, @RequestBody Company company) throws AddressException, MessagingException, IOException {
         System.out.println("Sending email");
+        System.out.println(company.getCompanyLogo());
         companyRepository.linkPendingEmployeeWithCompany(company.getId(),email);
         emailTemplates.sendmail(company, email);
         return company;

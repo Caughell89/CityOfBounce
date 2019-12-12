@@ -2,11 +2,11 @@ spring:
   server:
     port: 5000 
   datasource:
-#    url: jdbc:mysql://localhost:3306/city_of_bounce?useSSL=false
+#    url: jdbc:mysql://localhost:3306/city_of_bounce?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
 #    username: root
-#    password: =Heat40440
+#    password: =Heat4044
     
-    url: jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_5d9109e69eca09f?reconnect=true
+    url: jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_5d9109e69eca09f?reconnect=true&useSSL=false
     username: b710639b29086c
     password: 31dfd9aa
     

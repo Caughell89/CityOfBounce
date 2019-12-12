@@ -6,9 +6,11 @@ import com.cloudinary.utils.ObjectUtils;
 import com.example.springsocial.exception.BadRequestException;
 import com.example.springsocial.exception.ResourceNotFoundException;
 import com.example.springsocial.model.Company;
+import com.example.springsocial.model.Employee;
 import com.example.springsocial.model.Location;
 import com.example.springsocial.model.User;
 import com.example.springsocial.repository.CompanyRepository;
+import com.example.springsocial.repository.EmployeeRepository;
 import com.example.springsocial.repository.LocationRepository;
 import com.example.springsocial.repository.UserRepository;
 import com.example.springsocial.security.CurrentUser;
@@ -45,6 +47,9 @@ public class UserController {
 
     @Autowired
     private CompanyRepository companyRepository;
+    
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     Cloudinary cloud = new Cloudinary(ObjectUtils.asMap(
             "cloud_name", "city-of-bounce",
@@ -96,7 +101,12 @@ public class UserController {
                 foundUser.setImageUrl(value.toString());
             }
         }
-
+        if(foundUser.getCompany().getId()!=null){
+        Optional<Employee> optionalE = employeeRepository.findByEmployeeEmail(user.getEmail());
+        Employee employee = optionalE.get();
+        employee.setEmployeePhoto(foundUser.getImageUrl());
+        employeeRepository.save(employee);
+        }
         System.out.println("attempting to save");
         userRepository.save(foundUser);
         return foundUser;
