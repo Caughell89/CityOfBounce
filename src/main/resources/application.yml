@@ -9,7 +9,7 @@ spring:
 #    url: jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_5d9109e69eca09f?reconnect=true&useSSL=false
 #    username: b710639b29086c
 #    password: 31dfd9aa
-#    
+   
     
   jpa:
     open-in-view: true

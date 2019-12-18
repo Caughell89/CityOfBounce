@@ -63,8 +63,7 @@ public class CompanyController {
         return foundCompany;
     }
 
-    @GetMapping("/{location}/{companyName}")
-    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/{location}/{companyName}/shop")
     public Company getCompanyByUrl(@PathVariable String location, @PathVariable String companyName) {
         System.out.println("Here looking for a company");
         String companyUrl = location + "/" + companyName;
@@ -74,13 +73,20 @@ public class CompanyController {
 
         return foundCompany;
     }
-    
-    @GetMapping("/access")
-    @PreAuthorize("hasRole('USER')")
-    @ResponseBody
-    public String getHome() {
 
-        return "There is access";
+    @RequestMapping(value = "/access", method = RequestMethod.GET)
+    @ResponseBody
+    public Company getHome() {
+
+        int i = 100;
+        Long l = new Long(i);
+        Company company = new Company();
+        company.setId(l);
+        company.setCompanyName("HIIIII");
+        company.setLocation("Buffalo");
+        company.setStateAbbr("NY");
+        company.setCompanyUrl("HHASDFJASDF");
+        return company;
     }
 
     @GetMapping("/{state}/Locations")
@@ -229,16 +235,16 @@ public class CompanyController {
         System.out.println("Saving Product!");
         Optional<Company> optional = companyRepository.findById(product.getCompanyId());
         Company foundCompany = optional.get();
-        
+
         List<String> photoUrls = new ArrayList();
         int photoNumber = 0;
         for (String productPhoto : product.getProductPhotos()) {
-        photoNumber++;  
-        int count = 0;
-        Map params = ObjectUtils.asMap("public_id", "Company/" + foundCompany.getCompanyUrl() + "/Products/" + product.getProductType().replaceAll("\\s+","")+"-"+photoNumber);
+            photoNumber++;
+            int count = 0;
+            Map params = ObjectUtils.asMap("public_id", "Company/" + foundCompany.getCompanyUrl() + "/Products/" + product.getProductType().replaceAll("\\s+", "") + "-" + photoNumber);
 
             Map uploadResult = cloud.uploader().upload(productPhoto, params);
-            Map result = cloud.api().resource("Company/" + foundCompany.getCompanyUrl() + "/Products/" + product.getProductType().replaceAll("\\s+","")+"-"+photoNumber, ObjectUtils.emptyMap());
+            Map result = cloud.api().resource("Company/" + foundCompany.getCompanyUrl() + "/Products/" + product.getProductType().replaceAll("\\s+", "") + "-" + photoNumber, ObjectUtils.emptyMap());
             for (Object value : result.values()) {
                 count++;
                 if (count == 4) {
@@ -246,11 +252,11 @@ public class CompanyController {
                     photoUrls.add(productPhoto);
                 }
             }
-            
+
         }
-       
+
         product.setProductPhotos(photoUrls);
-        
+
         productRepository.save(product);
 
         return product;
