@@ -20,10 +20,6 @@ import javax.validation.constraints.NotNull;
 public class Location {
     
     @Id
-    @Column(name="zipcode_id")
-    private int zipcodeId;
-    
-    @Column(nullable = false)
     private String zipCode;
 
     @Column(nullable = false)
@@ -34,6 +30,8 @@ public class Location {
     
     @Column(nullable = false)
     private String stateAbbr;
+
+
 
     public String getZipCode() {
         return zipCode;
@@ -65,14 +63,6 @@ public class Location {
 
     public void setStateAbbr(String stateAbbr) {
         this.stateAbbr = stateAbbr;
-    }
-
-    public int getZipcodeId() {
-        return zipcodeId;
-    }
-
-    public void setZipcodeId(int zipcodeId) {
-        this.zipcodeId = zipcodeId;
     }
 
 }
