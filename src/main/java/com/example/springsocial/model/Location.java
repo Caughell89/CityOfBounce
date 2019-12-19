@@ -20,7 +20,6 @@ import javax.validation.constraints.NotNull;
 public class Location {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="zipcode_id")
     private int zipcodeId;
     
