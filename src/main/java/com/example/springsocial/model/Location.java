@@ -20,6 +20,11 @@ import javax.validation.constraints.NotNull;
 public class Location {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="zipcode_id")
+    private int zipcodeId;
+    
+    @Column(nullable = false)
     private String zipCode;
 
     @Column(nullable = false)
@@ -30,15 +35,6 @@ public class Location {
     
     @Column(nullable = false)
     private String stateAbbr;
-
-    @Column(nullable = false)
-    private String county;
-
-    @Column(nullable = false)
-    private Long latitude;
-    
-    @Column(nullable = false)
-    private Long longitude;
 
     public String getZipCode() {
         return zipCode;
@@ -72,35 +68,13 @@ public class Location {
         this.stateAbbr = stateAbbr;
     }
 
-    public String getCounty() {
-        return county;
+    public int getZipcodeId() {
+        return zipcodeId;
     }
 
-    public void setCounty(String county) {
-        this.county = county;
+    public void setZipcodeId(int zipcodeId) {
+        this.zipcodeId = zipcodeId;
     }
 
-    public Long getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Long latitude) {
-        this.latitude = latitude;
-    }
-
-    public Long getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Long longitude) {
-        this.longitude = longitude;
-    }
-    
-    
-    
-   
-    
-
-    
 }
 
