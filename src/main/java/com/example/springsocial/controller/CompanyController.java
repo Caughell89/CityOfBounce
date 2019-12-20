@@ -171,7 +171,6 @@ public class CompanyController {
         ArrayList<Location> locations = locationRepository.findLocationByPlaceAndStateAbbr(company.getLocation(), company.getStateAbbr());
 
         for (int i = 0; i < locations.size(); i++) { 
-            System.out.println("Saving area below:");
             System.out.println(locations.get(i).getZipCode());
             companyRepository.saveLocation(company.getId(), locations.get(i).getZipCode());
         }
