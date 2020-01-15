@@ -101,7 +101,7 @@ public class UserController {
                 foundUser.setImageUrl(value.toString());
             }
         }
-        if(foundUser.getCompany().getId()!=null){
+        if(foundUser.getCompany().getCompanyId()!=null){
         Optional<Employee> optionalE = employeeRepository.findByEmployeeEmail(user.getEmail());
         Employee employee = optionalE.get();
         employee.setEmployeePhoto(foundUser.getImageUrl());

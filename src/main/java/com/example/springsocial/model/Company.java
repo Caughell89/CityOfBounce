@@ -26,7 +26,7 @@ public class Company {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long companyId;
 
     @Column(nullable = false)
     private String companyName;
@@ -64,6 +64,10 @@ public class Company {
     @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="company_id")
     private List<Product> products = new ArrayList<>();
+    
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="company_id")
+    private List<Hours> hours = new ArrayList<>();
     
 
     public String getCompanyName() {
@@ -115,12 +119,12 @@ public class Company {
         this.companyUrl = companyUrl;
     }
 
-    public Long getId() {
-        return id;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public List<Location> getAreas() {
@@ -153,6 +157,14 @@ public class Company {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public List<Hours> getHours() {
+        return hours;
+    }
+
+    public void setHours(List<Hours> hours) {
+        this.hours = hours;
     }
 
 

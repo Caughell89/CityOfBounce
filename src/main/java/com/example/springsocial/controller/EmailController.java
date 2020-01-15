@@ -26,7 +26,7 @@ public class EmailController {
     public Company sendEmail(@PathVariable String email, @RequestBody Company company) throws AddressException, MessagingException, IOException {
         System.out.println("Sending email");
         System.out.println(company.getCompanyLogo());
-        companyRepository.linkPendingEmployeeWithCompany(company.getId(),email);
+        companyRepository.linkPendingEmployeeWithCompany(company.getCompanyId(),email);
         emailTemplates.sendmail(company, email);
         return company;
     }

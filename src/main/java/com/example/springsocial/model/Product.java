@@ -21,8 +21,8 @@ public class Product {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private Long id;
+    @Column(name="product_id")
+    private Long productId;
     
     @Column(nullable = false, name="company_id")
     private Long companyId;
@@ -68,12 +68,12 @@ public class Product {
     @JoinColumn(name="product_id")
     private List<ProductReview> productReviews = new ArrayList<>();
 
-    public Long getId() {
-        return id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public Long getCompanyId() {

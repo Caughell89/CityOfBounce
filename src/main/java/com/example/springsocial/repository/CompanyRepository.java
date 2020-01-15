@@ -56,6 +56,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     
     @Query(value = FIND_ZIPS_BY_PLACE_AND_COMPANY_ID, nativeQuery = true)
     public List<String> findZipsByPlaceAndCompanyId(Long companyId, String place);
+    
 
     public static final String DELETE_LOCATION_BY_COMPANY_ID_AND_ZIP = "DELETE FROM companies_areas WHERE company_id = ? AND zip_id = ?;";
     

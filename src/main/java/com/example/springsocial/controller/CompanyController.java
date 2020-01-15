@@ -74,20 +74,7 @@ public class CompanyController {
         return foundCompany;
     }
 
-    @RequestMapping(value = "/access", method = RequestMethod.GET)
-    @ResponseBody
-    public Company getHome() {
-
-        int i = 100;
-        Long l = new Long(i);
-        Company company = new Company();
-        company.setId(l);
-        company.setCompanyName("HIIIII");
-        company.setLocation("Buffalo");
-        company.setStateAbbr("NY");
-        company.setCompanyUrl("HHASDFJASDF");
-        return company;
-    }
+    
 
     @GetMapping("/{state}/Locations")
     @PreAuthorize("hasRole('USER')")
@@ -112,20 +99,20 @@ public class CompanyController {
         foundUser.setRole("Owner");
         userRepository.save(foundUser);
         Employee employee = new Employee();
-        employee.setCompanyId(savedCompany.getId());
+        employee.setCompanyId(savedCompany.getCompanyId());
         employee.setTitle("Owner");
         employee.setEmployeeFirstName(foundUser.getFirstName());
         employee.setEmployeeLastName(foundUser.getLastName());
         employee.setEmployeeEmail(foundUser.getEmail());
         employee.setEmployeePhoto(foundUser.getImageUrl());
-        employee.setUserId(savedCompany.getId());
+        employee.setUserId(savedCompany.getCompanyId());
         employeeRepository.save(employee);
 
         ArrayList<Location> locations = locationRepository.findLocationByPlaceAndStateAbbr(savedCompany.getLocation(), savedCompany.getStateAbbr());
 
         for (int i = 0; i < locations.size(); i++) {
             System.out.println(locations.get(i).getZipCode());
-            companyRepository.saveLocation(savedCompany.getId(), locations.get(i).getZipCode());
+            companyRepository.saveLocation(savedCompany.getCompanyId(), locations.get(i).getZipCode());
         }
 
         return savedCompany;
@@ -138,7 +125,7 @@ public class CompanyController {
     public Company setCompanyLogo(@RequestBody Company company) throws IOException, Exception {
         System.out.println("Saving logo!");
         System.out.println(company.getCompanyLogo());
-        Optional<Company> optional = companyRepository.findById(company.getId());
+        Optional<Company> optional = companyRepository.findById(company.getCompanyId());
         Company foundCompany = optional.get();
         int count = 0;
         if (!foundCompany.getCompanyLogo().equals(company.getCompanyLogo())) {
@@ -166,13 +153,13 @@ public class CompanyController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Company addServiceArea(@RequestBody Company company) throws IOException, Exception {
-        System.out.println(company.getId() + " Company Name: " + company.getCompanyName());
+        System.out.println(company.getCompanyId() + " Company Name: " + company.getCompanyName());
         System.out.println("Adding zipcodes for " + company.getLocation() + ", " + company.getStateAbbr());
         ArrayList<Location> locations = locationRepository.findLocationByPlaceAndStateAbbr(company.getLocation(), company.getStateAbbr());
 
         for (int i = 0; i < locations.size(); i++) { 
             System.out.println(locations.get(i).getZipCode());
-            companyRepository.saveLocation(company.getId(), locations.get(i).getZipCode());
+            companyRepository.saveLocation(company.getCompanyId(), locations.get(i).getZipCode());
         }
 
         return company;
@@ -183,8 +170,8 @@ public class CompanyController {
     public Company deletePendingEmployee(@RequestBody Company company) {
         System.out.println("Deleteing pending employee");
         System.out.println(company.getCompanyName());
-        System.out.println(company.getId());
-        companyRepository.deletePendingEmployeeWithCompany(company.getId(), company.getCompanyName());
+        System.out.println(company.getCompanyId());
+        companyRepository.deletePendingEmployeeWithCompany(company.getCompanyId(), company.getCompanyName());
 
         return company;
     }
