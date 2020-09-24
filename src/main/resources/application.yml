@@ -9,8 +9,30 @@ spring:
 #    url: jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_5d9109e69eca09f?reconnect=true&useSSL=false
 #    username: b710639b29086c
 #    password: 31dfd9aa
-   
-    
+  quartz:
+      job-store-type: jdbc
+      properties:
+          org:
+              quartz:
+                  threadPool:
+                      threadCount: 5
+      
+  mail:
+      host: smtp.gmail.com
+      port: 587
+      username: cityofbounce@gmail.com
+      password: =Heat4044
+      properties:
+          mail:
+              smtp:
+                  auth: true
+                  enable: true
+
+  stripe:
+      keys:
+          public: pk_test_dKWEoD6U9NbRKIfsKffjsFeO00hzjsayRD
+          secret: sk_test_gXlNSy1TSr8wEhlc2eDIzyAl00uPeaMRms
+
   jpa:
     open-in-view: true
     show-sql: true
@@ -54,3 +76,5 @@ app:
       - myandroidapp://oauth2/redirect
       - myiosapp://oauth2/redirect
                   
+
+

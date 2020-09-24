@@ -20,14 +20,26 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
     public List<String> findLocationsByState(@Param("state") String state);
     
     public static final String FIND_ALL_ACTIVE_LOCATIONS = "SELECT distinct concat(place, ', ', state_abbr) \n" +
-"FROM companies_areas  ca \n" +
-"JOIN locations l \n" +
-"ON ca.zip_id=l.zip_code\n" +
-"ORDER BY concat(place, ', ', state_abbr) ";
+    "FROM companies_areas  ca \n" +
+    "JOIN locations l \n" +
+    "ON ca.zip_id=l.zip_code\n" +
+    "ORDER BY concat(place, ', ', state_abbr) ";
 
     @Query(value = FIND_ALL_ACTIVE_LOCATIONS, nativeQuery = true)
+    public List<String> getAllActiveLocations();
+
+    public static final String FIND_ALL_LOCATIONS = "SELECT distinct concat(place, ', ', state_abbr) \n" +
+    "FROM locations";
+
+    @Query(value = FIND_ALL_LOCATIONS, nativeQuery = true)
     public List<String> getAllLocations();
 
+    public static final String FIND_LOCATIONS_BY_CITY = 
+    "SELECT distinct concat(place, ', ', state_abbr) \n" +
+    "FROM locations WHERE place LIKE ?% ORDER BY concat(place,', ', state_abbr) ASC;";
+
+    @Query(value = FIND_LOCATIONS_BY_CITY, nativeQuery = true)
+    public List<String> getLocationsByCity(String location);
     
 
 }

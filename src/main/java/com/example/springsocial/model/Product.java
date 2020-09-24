@@ -61,7 +61,10 @@ public class Product {
     private String description;
     
     @ElementCollection
-    @CollectionTable(name = "product_photos")
+    @CollectionTable(
+        name = "product_photos",
+        joinColumns=@JoinColumn(name = "product_id", referencedColumnName = "product_id")
+    )
     private List<String> productPhotos;    
     
     @OneToMany

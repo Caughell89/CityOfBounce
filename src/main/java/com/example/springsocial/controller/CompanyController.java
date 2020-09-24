@@ -6,14 +6,18 @@ import com.example.springsocial.exception.BadRequestException;
 import com.example.springsocial.model.Company;
 import com.example.springsocial.model.Employee;
 import com.example.springsocial.model.Location;
+import com.example.springsocial.model.Order;
 import com.example.springsocial.model.Product;
 import com.example.springsocial.model.User;
+import com.example.springsocial.payload.OrderSearchCritera;
 import com.example.springsocial.repository.CompanyRepository;
 import com.example.springsocial.repository.EmployeeRepository;
 import com.example.springsocial.repository.LocationRepository;
+import com.example.springsocial.repository.OrderRepository;
 import com.example.springsocial.repository.ProductRepository;
 import com.example.springsocial.repository.UserRepository;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +51,9 @@ public class CompanyController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+    
+    @Autowired
+    private OrderRepository orderRepository;
 
     Cloudinary cloud = new Cloudinary(ObjectUtils.asMap(
             "cloud_name", "city-of-bounce",
@@ -63,7 +70,7 @@ public class CompanyController {
         return foundCompany;
     }
 
-    @GetMapping("/{location}/{companyName}/shop")
+    @GetMapping("/company/{location}/{companyName}")
     public Company getCompanyByUrl(@PathVariable String location, @PathVariable String companyName) {
         System.out.println("Here looking for a company");
         String companyUrl = location + "/" + companyName;
@@ -73,8 +80,6 @@ public class CompanyController {
 
         return foundCompany;
     }
-
-    
 
     @GetMapping("/{state}/Locations")
     @PreAuthorize("hasRole('USER')")
@@ -157,7 +162,7 @@ public class CompanyController {
         System.out.println("Adding zipcodes for " + company.getLocation() + ", " + company.getStateAbbr());
         ArrayList<Location> locations = locationRepository.findLocationByPlaceAndStateAbbr(company.getLocation(), company.getStateAbbr());
 
-        for (int i = 0; i < locations.size(); i++) { 
+        for (int i = 0; i < locations.size(); i++) {
             System.out.println(locations.get(i).getZipCode());
             companyRepository.saveLocation(company.getCompanyId(), locations.get(i).getZipCode());
         }
@@ -248,6 +253,35 @@ public class CompanyController {
 
         return product;
 
+    }
+
+    @GetMapping("/company/orders/{companyId}/{date}")
+    @PreAuthorize("hasRole('USER')")
+    public ArrayList<Order> getCompanyOrdersByDate(@PathVariable Long companyId, @PathVariable String date) {
+        System.out.println(date);
+        String[] result = date.split("_");
+        String date2 = result[2]+"-"+result[0]+"-"+result[1];
+        System.out.println(date2);
+        return orderRepository.getOrdersByCompanyIdAndDate(companyId, date2);
+    }
+    
+    @GetMapping("/company/orders/search=email{companyId}/{email}")
+    @PreAuthorize("hasRole('USER')")
+    public ArrayList<Order> getCompanyOrdersBySearch(@PathVariable Long companyId, @PathVariable String email) {
+        return orderRepository.getOrdersByCompanyIdAndEmail(companyId, email);
+    }
+    
+        @GetMapping("/company/orders/search=name{companyId}/{name}")
+    @PreAuthorize("hasRole('USER')")
+    public ArrayList<Order> getCompanyOrdersByName(@PathVariable Long companyId, @PathVariable String name) {
+        return orderRepository.getOrdersByCompanyIdAndName(companyId, name);
+    }
+    
+    @GetMapping("/company/orders/search=order{companyId}/{orderId}")
+    @PreAuthorize("hasRole('USER')")
+    public ArrayList<Order> getCompanyOrdersByOrderId(@PathVariable Long companyId, @PathVariable Long orderId) {
+       
+        return orderRepository.getOrdersByCompanyIdAndOrderId(companyId, orderId);
     }
 
 }
