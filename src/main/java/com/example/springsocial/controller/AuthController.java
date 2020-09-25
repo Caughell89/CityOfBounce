@@ -29,7 +29,7 @@ import javax.mail.internet.AddressException;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -41,7 +41,7 @@ public class AuthController {
 
     @Autowired
     private TokenProvider tokenProvider;
-    
+
     @Autowired
     private EmailTemplates emailTemplates;
 
@@ -65,7 +65,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) throws MessagingException, AddressException, IOException {
         System.out.println("Step 1");
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new BadRequestException("Email address already in use.");
         }
         System.out.println("Step 2");
@@ -79,12 +79,12 @@ public class AuthController {
         user.setPhone("5555555555");
         user.setImageUrl("noPhoto");
         user.setProviderId("native");
-       
-System.out.println("Step 3");
+
+        System.out.println("Step 3");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-System.out.println("Step 4");
+        System.out.println("Step 4");
         User result = userRepository.save(user);
-System.out.println("Step 5");
+        System.out.println("Step 5");
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
                 .buildAndExpand(result.getId()).toUri();
@@ -92,5 +92,5 @@ System.out.println("Step 5");
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "User registered successfully@"));
     }
-    
+
 }
