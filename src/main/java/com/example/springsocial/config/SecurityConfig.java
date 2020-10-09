@@ -99,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/", 
-                        "/checkout", "/charge", "/payment", "payment/**",
+                        "/checkout", "/charge", "/payment", "/payment/**",
                         "/resource/**/**", "/resource/**", "/resource/Book", "/access" , "/products/**",
                         "/error",
                         "/favicon.ico",

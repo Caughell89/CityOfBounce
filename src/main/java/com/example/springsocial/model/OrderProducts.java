@@ -14,30 +14,30 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "order_products")
-public class OrderProducts implements Serializable  {
-    
+public class OrderProducts implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long OrderProductId;
-    
+
     @Column(name = "order_id")
     private Long orderId;
-    
-    @Column(nullable = false, name = "product_id")
+
+    @Column(nullable = false, name = "product_id", unique = false)
     private int productId;
-    
+
     @Column(nullable = false, name = "quantity")
     private int quantity;
-        
+
     @Column(nullable = false, name = "price")
     private double price;
-    
-    @ElementCollection   
+
+    @ElementCollection
     @CollectionTable(
-        name = "product_photos",
-        joinColumns=@JoinColumn(name = "product_id", referencedColumnName = "product_id")
+            name = "product_photos",
+            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     )
-    private List<String> productPhotos;  
+    private List<String> productPhotos;
 
     public Long getOrderId() {
         return orderId;
@@ -86,6 +86,5 @@ public class OrderProducts implements Serializable  {
     public void setProductPhotos(List<String> productPhotos) {
         this.productPhotos = productPhotos;
     }
-        
-    
+
 }

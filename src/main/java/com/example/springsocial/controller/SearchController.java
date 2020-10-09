@@ -11,6 +11,8 @@ import com.example.springsocial.repository.ProductReviewRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -74,6 +76,8 @@ public class SearchController {
             foundProducts.get(i).setProductReviews(pr);
         }
         
+        
+       
     
         return foundProducts;
     }
