@@ -283,5 +283,11 @@ public class CompanyController {
        
         return orderRepository.getOrdersByCompanyIdAndOrderId(companyId, orderId);
     }
+    
+    @GetMapping("/resource/company/{companyId}")
+    @ResponseBody
+    public Company getPublicCompanyById(@PathVariable Long companyId) {
+        return companyRepository.getCompanyByCompanyId(companyId);
+    }
 
 }

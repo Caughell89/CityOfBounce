@@ -81,8 +81,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query(value = SET_PAYMENT_ID, nativeQuery = true)
     public void setPaymentId(String paymentId, Long companyId);
 
-
-    
+    public Company getCompanyByCompanyId(Long companyId);
 
 
 }
