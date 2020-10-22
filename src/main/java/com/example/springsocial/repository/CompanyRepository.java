@@ -70,9 +70,16 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     
     @Query(value = FIND_COMPANY_BY_COMPANY_URL, nativeQuery = true)
     public Optional<Company> findByCompanyUrl(String companyUrl);
+
     
     
     
+    public static final String SET_PAYMENT_ID = "UPDATE companies SET payment_id = ? WHERE company_id = ?;";
+    
+    @Transactional
+    @Modifying
+    @Query(value = SET_PAYMENT_ID, nativeQuery = true)
+    public void setPaymentId(String paymentId, Long companyId);
 
 
     

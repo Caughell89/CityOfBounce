@@ -3,6 +3,7 @@ package com.example.springsocial.controller;
 import com.example.springsocial.model.Location;
 import com.example.springsocial.model.PartyAddress;
 import com.example.springsocial.model.TaxRate;
+import com.example.springsocial.repository.CompanyRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.stripe.Stripe;
@@ -12,7 +13,6 @@ import com.stripe.model.AccountLink;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.AccountCreateParams;
 import com.stripe.param.AccountLinkCreateParams;
-import static io.jsonwebtoken.Jwts.header;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
@@ -27,12 +27,13 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,6 +47,10 @@ public class PaymentController {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
+    @Autowired
+    private CompanyRepository companyRepository;
+
+    @CrossOrigin
     @RequestMapping(value = "/payment", method = RequestMethod.POST)
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.CREATED)
@@ -53,7 +58,7 @@ public class PaymentController {
     public String processPayment(@RequestBody int price) throws StripeException {
         Stripe.apiKey = "sk_test_gXlNSy1TSr8wEhlc2eDIzyAl00uPeaMRms";
         System.out.println(price);
-        double fees = (price * .029 + 100)/100;
+        double fees = (price * .029 + 100) / 100;
         System.out.println(fees);
         List<Object> paymentMethodTypes
                 = new ArrayList<>();
@@ -67,27 +72,43 @@ public class PaymentController {
         );
 //        params.put("application_fee_amount", fees);
 
-
         PaymentIntent paymentIntent
                 = PaymentIntent.create(params);
         return gson.toJson(paymentIntent);
 
     }
 
-    @RequestMapping(value = "/payment/register", method = RequestMethod.POST)
+    @CrossOrigin
+    @RequestMapping(value = "/payment/{stripeId}", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public String getStripeAccount(@PathVariable String stripeId) throws StripeException {
+        Stripe.apiKey = "sk_test_gXlNSy1TSr8wEhlc2eDIzyAl00uPeaMRms";
+        System.out.println("getting stripe account");
+        System.out.println(stripeId);
+        Account account = Account.retrieve(stripeId);
+        
+        System.out.println(account.getChargesEnabled());
+        return gson.toJson(account);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/payment/register/{companyId}", method = RequestMethod.POST)
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public String processRegestration() throws StripeException {
+    public String processRegestration(@PathVariable Long companyId) throws StripeException {
         Stripe.apiKey = "sk_test_gXlNSy1TSr8wEhlc2eDIzyAl00uPeaMRms";
-
+        System.out.println(companyId);
         AccountCreateParams params
                 = AccountCreateParams.builder()
                         .setType(AccountCreateParams.Type.STANDARD)
                         .build();
 
         Account account = Account.create(params);
-
+        System.out.println(account.getId());
+        
+        companyRepository.setPaymentId(account.getId(), companyId);
         AccountLinkCreateParams linkParams
                 = AccountLinkCreateParams.builder()
                         .setAccount(account.getId())
@@ -102,7 +123,31 @@ public class PaymentController {
         return gson.toJson(accountLinkUrl);
 
     }
-    
+
+//    @CrossOrigin
+//    @RequestMapping(value = "/payment/linkAccount/{companyId}", method = RequestMethod.POST)
+//    @PreAuthorize("hasRole('USER')")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseBody
+//    public String processRegestration(@PathVariable Long companyId) throws StripeException {
+//        Stripe.apiKey = "sk_test_gXlNSy1TSr8wEhlc2eDIzyAl00uPeaMRms";
+//        System.out.println(companyId);
+//       
+//        System.out.println(account.getId());
+//        AccountLinkCreateParams linkParams
+//                = AccountLinkCreateParams.builder()
+//                        .setAccount(account.getId())
+//                        .setRefreshUrl("http://localhost:3000/reauth")
+//                        .setReturnUrl("http://localhost:3000/companyInfo")
+//                        .setType(AccountLinkCreateParams.Type.ACCOUNT_ONBOARDING)
+//                        .build();
+//
+//        AccountLink accountLink = AccountLink.create(linkParams);
+//        String accountLinkUrl = accountLink.getUrl();
+//        System.out.println(accountLinkUrl);
+//        return gson.toJson(accountLinkUrl);
+//
+//    }
     @CrossOrigin
     @RequestMapping(value = "/resource/taxes", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)

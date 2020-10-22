@@ -6,7 +6,12 @@ import com.example.springsocial.repository.CompanyRepository;
 import com.example.springsocial.repository.OrderRepository;
 import com.example.springsocial.repository.ProductRepository;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 import java.util.List;
+import java.util.TimeZone;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import org.quartz.Scheduler;
@@ -32,16 +37,17 @@ public class OrderController {
 
     @Autowired
     private CompanyRepository companyRepository;
-    
+
     @Autowired
     private EmailTemplates emailTemplates;
 
     @Autowired
     private OrderRepository orderRepository;
-    
+
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
-    
-    @Autowired Scheduler scheduler;
+
+    @Autowired
+    Scheduler scheduler;
 
     @RequestMapping(value = "/resource/Book", method = RequestMethod.POST)
     @PreAuthorize("hasRole('USER')")
@@ -54,7 +60,7 @@ public class OrderController {
         System.out.println(sOrder.getOrderId());
         System.out.println("WTF where is the order number");
         System.out.println("Sending email");
-       
+
         emailTemplates.sendOrderConfirmation(sOrder, "Caughell89@yahoo.com");
 //        for (int i = 0; i < order.getOrderProducts().size(); i++) {
 //            OrderProducts op = new OrderProducts();
@@ -64,23 +70,25 @@ public class OrderController {
 //            op.setQuantity(1);
 //            orderRepository.saveOrderProducts(sOrder.getOrderId(), op.getProductId(), op.getPrice(), op.getQuantity());
 //        }
-        
-        
-       
+
         return sOrder;
     }
-    
+
     @GetMapping(value = "/user/orders/{userId}")
     @PreAuthorize("hasRole('USER')")
     public List<Order> bookParty(@PathVariable Long userId) {
         List<Order> foundOrders = orderRepository.getOrdersByUserId(userId);
-        
-        for(int i = 0; i < foundOrders.size();i++){
+
+        for (int i = 0; i < foundOrders.size(); i++) {
         }
         return foundOrders;
     }
 
+    @GetMapping(value = "resource/blockedDates/{productId}")
+    @ResponseBody
+    public ArrayList<String> getBlockedDates(@PathVariable Long productId) {
 
-
+        return orderRepository.getBlockedDates(productId);
+    }
 
 }

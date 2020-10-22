@@ -31,6 +31,12 @@ public class OrderProducts implements Serializable {
 
     @Column(nullable = false, name = "price")
     private double price;
+    
+    @Column(nullable = false, name = "tax_rate")
+    private double taxRate;
+    
+    @Column(nullable = false, name = "salesTax")
+    private double salesTax;
 
     @ElementCollection
     @CollectionTable(
@@ -85,6 +91,22 @@ public class OrderProducts implements Serializable {
 
     public void setProductPhotos(List<String> productPhotos) {
         this.productPhotos = productPhotos;
+    }
+
+    public double getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(double taxRate) {
+        this.taxRate = taxRate;
+    }
+
+    public double getSalesTax() {
+        return salesTax;
+    }
+
+    public void setSalesTax(double salesTax) {
+        this.salesTax = salesTax;
     }
 
 }

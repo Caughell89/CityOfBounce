@@ -70,6 +70,7 @@ public class Product {
     @OneToMany
     @JoinColumn(name="product_id")
     private List<ProductReview> productReviews = new ArrayList<>();
+    
 
     public Long getProductId() {
         return productId;
@@ -190,6 +191,6 @@ public class Product {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    
+
     
 }

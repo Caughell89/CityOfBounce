@@ -2,7 +2,6 @@ package com.example.springsocial.repository;
 
 import com.example.springsocial.model.Employee;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

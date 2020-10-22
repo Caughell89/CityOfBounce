@@ -3,6 +3,8 @@ package com.example.springsocial.repository;
 import com.example.springsocial.model.Order;
 import com.example.springsocial.model.OrderProducts;
 import com.example.springsocial.model.PartyRequest;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -42,5 +44,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     public List<Order> getOrdersByUserId(Long userId);
     
-    
+    public static final String GET_BLOCKED_DATES_BY_PRODUCT_ID = "SELECT date(event_date) "
+            + "FROM orders o JOIN order_products op ON op.order_id= o.order_id "
+            + "WHERE op.product_id = ? AND event_date >= CURDATE();";
+
+    @Query(value = GET_BLOCKED_DATES_BY_PRODUCT_ID, nativeQuery = true)
+    public ArrayList<String> getBlockedDates(Long productId);
+
 }

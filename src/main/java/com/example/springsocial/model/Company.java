@@ -27,6 +27,9 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long companyId;
+    
+    @Column(nullable= false)
+    private String paymentId;
 
     @Column(nullable = false)
     private String companyName;
@@ -68,6 +71,10 @@ public class Company {
     @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="company_id")
     private List<Hours> hours = new ArrayList<>();
+    
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="company_id")
+    private List<CompanyMessage> companyMessages = new ArrayList<>();
     
 
     public String getCompanyName() {
@@ -165,6 +172,22 @@ public class Company {
 
     public void setHours(List<Hours> hours) {
         this.hours = hours;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public List<CompanyMessage> getCompanyMessages() {
+        return companyMessages;
+    }
+
+    public void setCompanyMessages(List<CompanyMessage> companyMessages) {
+        this.companyMessages = companyMessages;
     }
 
 
