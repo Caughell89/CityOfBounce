@@ -70,9 +70,8 @@ public class CompanyController {
         return foundCompany;
     }
 
-    @GetMapping("/company/{location}/{companyName}")
+    @GetMapping("/resource/company/{location}/{companyName}")
     public Company getCompanyByUrl(@PathVariable String location, @PathVariable String companyName) {
-        System.out.println("Here looking for a company");
         String companyUrl = location + "/" + companyName;
         System.out.println(companyUrl);
         Optional<Company> optional = companyRepository.findByCompanyUrl(companyUrl);
@@ -287,6 +286,7 @@ public class CompanyController {
     @GetMapping("/resource/company/{companyId}")
     @ResponseBody
     public Company getPublicCompanyById(@PathVariable Long companyId) {
+        System.out.println("TESTing company public get");
         return companyRepository.getCompanyByCompanyId(companyId);
     }
 

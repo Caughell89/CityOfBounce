@@ -1,8 +1,8 @@
 package com.example.springsocial.controller;
 
-import com.example.springsocial.model.Location;
 import com.example.springsocial.model.PartyAddress;
 import com.example.springsocial.model.TaxRate;
+import com.example.springsocial.payload.PaymentRequest;
 import com.example.springsocial.repository.CompanyRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -52,26 +52,28 @@ public class PaymentController {
 
     @CrossOrigin
     @RequestMapping(value = "/payment", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public String processPayment(@RequestBody int price) throws StripeException {
+    public String processPayment(@RequestBody PaymentRequest payment) throws StripeException {
         Stripe.apiKey = "sk_test_gXlNSy1TSr8wEhlc2eDIzyAl00uPeaMRms";
-        System.out.println(price);
-        double fees = (price * .029 + 100) / 100;
+        System.out.println(payment.getPrice());
+        System.out.println(payment.getStripeId());
+        int fees = (int) Math.round(payment.getPrice() * .029 + 100);
         System.out.println(fees);
         List<Object> paymentMethodTypes
                 = new ArrayList<>();
         paymentMethodTypes.add("card");
         Map<String, Object> params = new HashMap<>();
-        params.put("amount", price);
+        params.put("amount", payment.getPrice());
         params.put("currency", "usd");
         params.put(
                 "payment_method_types",
                 paymentMethodTypes
         );
-//        params.put("application_fee_amount", fees);
-
+        params.put("application_fee_amount", fees);
+        Map<String, Object> transferDataParams = new HashMap<>();
+        transferDataParams.put("destination", payment.getStripeId());
+        params.put("transfer_data", transferDataParams);
         PaymentIntent paymentIntent
                 = PaymentIntent.create(params);
         return gson.toJson(paymentIntent);
@@ -87,7 +89,7 @@ public class PaymentController {
         System.out.println("getting stripe account");
         System.out.println(stripeId);
         Account account = Account.retrieve(stripeId);
-        
+
         System.out.println(account.getChargesEnabled());
         return gson.toJson(account);
     }
@@ -107,7 +109,7 @@ public class PaymentController {
 
         Account account = Account.create(params);
         System.out.println(account.getId());
-        
+
         companyRepository.setPaymentId(account.getId(), companyId);
         AccountLinkCreateParams linkParams
                 = AccountLinkCreateParams.builder()

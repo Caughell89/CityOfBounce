@@ -6,12 +6,10 @@ import com.example.springsocial.repository.CompanyRepository;
 import com.example.springsocial.repository.OrderRepository;
 import com.example.springsocial.repository.ProductRepository;
 import java.io.IOException;
-import java.sql.Date;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 
 import java.util.List;
-import java.util.TimeZone;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import org.quartz.Scheduler;
@@ -20,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,8 +48,8 @@ public class OrderController {
     @Autowired
     Scheduler scheduler;
 
+    @CrossOrigin
     @RequestMapping(value = "/resource/Book", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Order bookParty(@RequestBody Order order) throws MessagingException, AddressException, IOException {
