@@ -49,4 +49,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = FIND_FILTERED_PRODUCTS, nativeQuery = true)
     public List<Product> findProductsBySearchFilters(String city, String state, 
             double minPrice, double maxPrice);
+    
+    public static final String FIND_PRODUCTS_BY_ORDER_ID = "SELECT * FROM products WHERE order_id = ?;";
+
+    @Query(value = FIND_PRODUCTS_BY_ORDER_ID, nativeQuery = true)
+    public List<Product> findProductsByOrderId(Long orderId);
 }

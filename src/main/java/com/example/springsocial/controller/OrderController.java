@@ -2,6 +2,10 @@ package com.example.springsocial.controller;
 
 import com.example.springsocial.email.EmailTemplates;
 import com.example.springsocial.model.Order;
+import com.example.springsocial.model.OrderProducts;
+import com.example.springsocial.model.Product;
+import com.example.springsocial.payload.OrderProductsRequest;
+import com.example.springsocial.payload.OrderRequest;
 import com.example.springsocial.repository.CompanyRepository;
 import com.example.springsocial.repository.OrderRepository;
 import com.example.springsocial.repository.ProductRepository;
@@ -10,9 +14,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.Optional;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
-import org.quartz.Scheduler;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,64 +35,87 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class OrderController {
-
+    
     @Autowired
     private ProductRepository productRepository;
-
+    
     @Autowired
     private CompanyRepository companyRepository;
-
+    
     @Autowired
     private EmailTemplates emailTemplates;
-
+    
     @Autowired
     private OrderRepository orderRepository;
-
+    
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
-
-    @Autowired
-    Scheduler scheduler;
-
+    
     @CrossOrigin
     @RequestMapping(value = "/resource/Book", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public Order bookParty(@RequestBody Order order) throws MessagingException, AddressException, IOException {
+    public Order bookParty(@RequestBody OrderRequest orderRequest) throws MessagingException, AddressException, IOException {
         System.out.println("We are booking a party here man!");
+        System.out.println(orderRequest.getOrderProducts().size());
+        Order order = mapOrderRequestToOrder(orderRequest);
 
         Order sOrder = orderRepository.save(order);
         System.out.println(sOrder.getOrderId());
-        System.out.println("WTF where is the order number");
-        System.out.println("Sending email");
 
         emailTemplates.sendOrderConfirmation(sOrder, "Caughell89@yahoo.com");
-//        for (int i = 0; i < order.getOrderProducts().size(); i++) {
-//            OrderProducts op = new OrderProducts();
-//            
-//            op.setProductId(1);
-//            op.setPrice(100.50);
-//            op.setQuantity(1);
-//            orderRepository.saveOrderProducts(sOrder.getOrderId(), op.getProductId(), op.getPrice(), op.getQuantity());
-//        }
 
         return sOrder;
     }
-
+    
     @GetMapping(value = "/user/orders/{userId}")
     @PreAuthorize("hasRole('USER')")
     public List<Order> bookParty(@PathVariable Long userId) {
         List<Order> foundOrders = orderRepository.getOrdersByUserId(userId);
-
-        for (int i = 0; i < foundOrders.size(); i++) {
-        }
+        
+        System.out.println("Finding orders");
+        System.out.println(foundOrders.size());
         return foundOrders;
     }
-
+    
     @GetMapping(value = "resource/blockedDates/{productId}")
     @ResponseBody
     public ArrayList<String> getBlockedDates(@PathVariable Long productId) {
-
+        
         return orderRepository.getBlockedDates(productId);
     }
-
+    
+    private Order mapOrderRequestToOrder(OrderRequest orderRequest) {
+        Order order = new Order();
+        List<OrderProducts> orderProducts = new ArrayList<>();
+        order.setUserId(orderRequest.getUserId());
+        order.setCustomerName(orderRequest.getCustomerName());
+        order.setEmail(orderRequest.getEmail());
+        order.setPhone(orderRequest.getPhone());
+        
+        order.setAddress(orderRequest.getAddress());
+        order.setCity(orderRequest.getCity());
+        order.setState(orderRequest.getState());
+        order.setZipcode(orderRequest.getZipcode());
+        
+        order.setEventDate(orderRequest.getEventDate());
+        order.setDescription(orderRequest.getDescription());
+        
+        for (OrderProductsRequest orderProductRequest : orderRequest.getOrderProducts()) {
+            OrderProducts lineItem = new OrderProducts();
+            lineItem.setPrice(orderProductRequest.getPrice());
+            lineItem.setQuantity(orderProductRequest.getQuantity());
+            lineItem.setTaxRate(orderProductRequest.getTaxRate());
+            lineItem.setSalesTax(orderProductRequest.getSalesTax());
+            
+            Optional<Product> product = productRepository.findById(orderProductRequest.getProductId());
+            Product foundProduct = product.get();
+            
+            lineItem.setProduct(foundProduct);
+            orderProducts.add(lineItem);
+        }
+        
+        order.setOrderProducts(orderProducts);
+                
+        return order;
+    }
 }

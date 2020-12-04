@@ -43,7 +43,8 @@ public class Company {
     @Column(nullable = false)
     private String companyUrl;
 
-    @Column
+    @Column(nullable = false,
+            columnDefinition="varchar(255) default 'https://res.cloudinary.com/city-of-bounce/image/upload/v1603887970/DefaultCompanyLogo.jpg'") 
     private String companyLogo;
     
     @CreationTimestamp

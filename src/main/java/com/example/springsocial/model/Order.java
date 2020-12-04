@@ -1,5 +1,7 @@
 package com.example.springsocial.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +26,10 @@ public class Order {
     private Long orderId;
 
     @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="order_id")
+    @JoinColumn(name="order_id")   
+    @JsonManagedReference
     private List<OrderProducts> orderProducts = new ArrayList<>();
     
-
     @Column(nullable = true)
     private Long userId;
     

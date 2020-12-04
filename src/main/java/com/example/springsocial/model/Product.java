@@ -6,11 +6,11 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -48,8 +48,8 @@ public class Product {
     @Column(nullable = true, name="width")
     private Float width;
     
-    @Column(nullable = false, name="color")
-    private String color;
+    @Column(nullable = true, name="height")
+    private Float height;
     
     @Column(nullable = true, name="material")
     private String material;
@@ -60,7 +60,8 @@ public class Product {
     @Column(nullable = true, name="product_description", columnDefinition="TEXT")
     private String description;
     
-    @ElementCollection
+    
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
         name = "product_photos",
         joinColumns=@JoinColumn(name = "product_id", referencedColumnName = "product_id")
@@ -128,14 +129,6 @@ public class Product {
         this.width = width;
     }
 
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
     public String getMaterial() {
         return material;
     }
@@ -190,6 +183,14 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public Float getHeight() {
+        return height;
+    }
+
+    public void setHeight(Float height) {
+        this.height = height;
     }
 
     

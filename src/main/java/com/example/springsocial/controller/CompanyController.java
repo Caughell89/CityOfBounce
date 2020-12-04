@@ -8,8 +8,8 @@ import com.example.springsocial.model.Employee;
 import com.example.springsocial.model.Location;
 import com.example.springsocial.model.Order;
 import com.example.springsocial.model.Product;
+import com.example.springsocial.model.PublicCompany;
 import com.example.springsocial.model.User;
-import com.example.springsocial.payload.OrderSearchCritera;
 import com.example.springsocial.repository.CompanyRepository;
 import com.example.springsocial.repository.EmployeeRepository;
 import com.example.springsocial.repository.LocationRepository;
@@ -17,7 +17,6 @@ import com.example.springsocial.repository.OrderRepository;
 import com.example.springsocial.repository.ProductRepository;
 import com.example.springsocial.repository.UserRepository;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -71,13 +70,22 @@ public class CompanyController {
     }
 
     @GetMapping("/resource/company/{location}/{companyName}")
-    public Company getCompanyByUrl(@PathVariable String location, @PathVariable String companyName) {
+    public PublicCompany getCompanyByUrl(@PathVariable String location, @PathVariable String companyName) {
         String companyUrl = location + "/" + companyName;
         System.out.println(companyUrl);
         Optional<Company> optional = companyRepository.findByCompanyUrl(companyUrl);
-        Company foundCompany = optional.get();
+        Company foundCompany = optional.get();        
 
-        return foundCompany;
+        PublicCompany publicCompany = new PublicCompany();
+        publicCompany.setCompanyLogo(foundCompany.getCompanyLogo());
+                publicCompany.setCreatedOn(foundCompany.getCreatedOn());
+                publicCompany.setCompanyName(foundCompany.getCompanyName());
+                publicCompany.setProducts(foundCompany.getProducts());;
+                publicCompany.setLocation(foundCompany.getLocation());
+                publicCompany.setStateAbbr(foundCompany.getStateAbbr());
+
+        
+        return publicCompany;
     }
 
     @GetMapping("/{state}/Locations")
@@ -205,9 +213,11 @@ public class CompanyController {
         return employee;
     }
 
-    @RequestMapping(value = "/removeArea/{place}/{companyId}")
-    public Company removeArea(@PathVariable String place, @PathVariable Long companyId) {
-        List<String> zips = companyRepository.findZipsByPlaceAndCompanyId(companyId, place);
+    @RequestMapping(value = "/removeArea/{place}/{state}/{companyId}")
+    public Company removeArea(@PathVariable String place, @PathVariable String state, @PathVariable Long companyId) {
+        System.out.println(place);
+        System.out.println(state);
+        List<String> zips = companyRepository.findZipsByPlaceAndCompanyId(companyId, place, state);
         for (int i = 0; i < zips.size(); i++) {
             companyRepository.removeLocationsByCompanyIdAndZip(companyId, zips.get(i));
         }
@@ -232,10 +242,10 @@ public class CompanyController {
         for (String productPhoto : product.getProductPhotos()) {
             photoNumber++;
             int count = 0;
-            Map params = ObjectUtils.asMap("public_id", "Company/" + foundCompany.getCompanyUrl() + "/Products/" + product.getProductType().replaceAll("\\s+", "") + "-" + photoNumber);
+            Map params = ObjectUtils.asMap("public_id", "Company/" + foundCompany.getCompanyUrl() + "/Products/" + product.getProductType().replaceAll("\\s+", "") + "/"+ product.getProductName().replaceAll("\\s+|\"|\'", "") +  "/"+ photoNumber);
 
             Map uploadResult = cloud.uploader().upload(productPhoto, params);
-            Map result = cloud.api().resource("Company/" + foundCompany.getCompanyUrl() + "/Products/" + product.getProductType().replaceAll("\\s+", "") + "-" + photoNumber, ObjectUtils.emptyMap());
+            Map result = cloud.api().resource("Company/" + foundCompany.getCompanyUrl() + "/Products/" + product.getProductType().replaceAll("\\s+", "") + "/"+ product.getProductName().replaceAll("\\s+|\"|\'", "") +  "/"+ photoNumber, ObjectUtils.emptyMap());
             for (Object value : result.values()) {
                 count++;
                 if (count == 4) {

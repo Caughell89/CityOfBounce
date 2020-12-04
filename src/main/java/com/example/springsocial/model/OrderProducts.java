@@ -1,15 +1,14 @@
 package com.example.springsocial.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,11 +19,14 @@ public class OrderProducts implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long OrderProductId;
 
-    @Column(name = "order_id")
-    private Long orderId;
-
-    @Column(nullable = false, name = "product_id", unique = false)
-    private int productId;
+    @ManyToOne
+    @JoinColumn(name="order_id")
+    @JsonBackReference
+    private Order order;
+    
+    @ManyToOne
+    @JoinColumn(name="product_id")
+    private Product product;
 
     @Column(nullable = false, name = "quantity")
     private int quantity;
@@ -37,22 +39,7 @@ public class OrderProducts implements Serializable {
     
     @Column(nullable = false, name = "salesTax")
     private double salesTax;
-
-    @ElementCollection
-    @CollectionTable(
-            name = "product_photos",
-            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "product_id")
-    )
-    private List<String> productPhotos;
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
+    
     public int getQuantity() {
         return quantity;
     }
@@ -69,28 +56,12 @@ public class OrderProducts implements Serializable {
         this.price = price;
     }
 
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
-
     public Long getOrderProductId() {
         return OrderProductId;
     }
 
     public void setOrderProductId(Long OrderProductId) {
         this.OrderProductId = OrderProductId;
-    }
-
-    public List<String> getProductPhotos() {
-        return productPhotos;
-    }
-
-    public void setProductPhotos(List<String> productPhotos) {
-        this.productPhotos = productPhotos;
     }
 
     public double getTaxRate() {
@@ -107,6 +78,22 @@ public class OrderProducts implements Serializable {
 
     public void setSalesTax(double salesTax) {
         this.salesTax = salesTax;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
 }

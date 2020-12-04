@@ -5,6 +5,7 @@ import com.example.springsocial.model.OrderProducts;
 import com.example.springsocial.model.PartyRequest;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -51,4 +52,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(value = GET_BLOCKED_DATES_BY_PRODUCT_ID, nativeQuery = true)
     public ArrayList<String> getBlockedDates(Long productId);
 
+    
+    public static final String GET_ORDERS_BY_DATE1 = "SELECT o.order_id,o.customer_name, o.user_id, o.address, o.city, o.state, o.zipcode, o.special_instructions, o.email, o.phone, o.created_on, o.event_date FROM products p JOIN order_products op ON p.product_id=op.product_id JOIN orders o ON o.order_id=op.order_id WHERE DATE(o.event_date) = ?;";
+    
+        //public static final String GET_ORDERS_BY_DATE = "SELECT * FROM orders o WHERE DATE(o.event_date) = ?;";
+
+    //@Query(value = GET_ORDERS_BY_DATE, nativeQuery = true)
+    public ArrayList<Order> findByEventDate(LocalDateTime date);
 }

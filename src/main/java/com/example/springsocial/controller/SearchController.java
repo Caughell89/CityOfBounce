@@ -1,7 +1,6 @@
 package com.example.springsocial.controller;
 
-import com.example.springsocial.model.Company;
-import com.example.springsocial.model.Location;
+
 import com.example.springsocial.model.Product;
 import com.example.springsocial.model.ProductReview;
 import com.example.springsocial.repository.CompanyRepository;
@@ -11,8 +10,6 @@ import com.example.springsocial.repository.ProductReviewRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

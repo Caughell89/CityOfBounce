@@ -52,10 +52,10 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query(value = DELETE_ACTIVE_EMPLOYEE, nativeQuery = true)
     public void deleteActiveEmployee(@Param("user_id") Long user_id);
 
-    public static final String FIND_ZIPS_BY_PLACE_AND_COMPANY_ID = "SELECT zip_id FROM companies c JOIN companies_areas ca ON c.company_id=ca.company_id JOIN locations l ON ca.zip_id = l.zip_code WHERE c.company_id = ? AND place = ?;";
+    public static final String FIND_ZIPS_BY_PLACE_AND_COMPANY_ID = "SELECT zip_id FROM companies c JOIN companies_areas ca ON c.company_id=ca.company_id JOIN locations l ON ca.zip_id = l.zip_code WHERE c.company_id = ? AND place = ? AND l.state_abbr = ?;";
     
     @Query(value = FIND_ZIPS_BY_PLACE_AND_COMPANY_ID, nativeQuery = true)
-    public List<String> findZipsByPlaceAndCompanyId(Long companyId, String place);
+    public List<String> findZipsByPlaceAndCompanyId(Long companyId, String place, String stateAbbr);
     
 
     public static final String DELETE_LOCATION_BY_COMPANY_ID_AND_ZIP = "DELETE FROM companies_areas WHERE company_id = ? AND zip_id = ?;";
