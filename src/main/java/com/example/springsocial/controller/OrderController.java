@@ -61,7 +61,7 @@ public class OrderController {
 
         Order sOrder = orderRepository.save(order);
         System.out.println(sOrder.getOrderId());
-
+        System.out.println(sOrder.getCustomerName());
         emailTemplates.sendOrderConfirmation(sOrder, "Caughell89@yahoo.com");
 
         return sOrder;

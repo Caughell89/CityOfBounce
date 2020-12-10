@@ -25,6 +25,7 @@ public class MessageController {
     public void markAsRead(@PathVariable Long messageId){
         
         messageRepository.setIsRead(messageId);
+
     }
     
     @CrossOrigin
@@ -44,6 +45,15 @@ public class MessageController {
     public void flagDeleted(@PathVariable Long messageId){
         
         messageRepository.setIsDeleted(messageId);
+  
+    }
+    
+    @RequestMapping(value = "/resource/message/move/{messageId}", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void flagNotDeleted(@PathVariable Long messageId){
+        
+        messageRepository.setNotDeleted(messageId);
   
     }
     

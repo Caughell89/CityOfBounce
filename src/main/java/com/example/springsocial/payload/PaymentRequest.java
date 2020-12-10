@@ -9,6 +9,9 @@ public class PaymentRequest {
     
     @NotBlank
     private String stripeId;
+    
+    @NotBlank
+    private int tax;
 
     public int getPrice() {
         return price;
@@ -24,5 +27,13 @@ public class PaymentRequest {
 
     public void setStripeId(String stripeId) {
         this.stripeId = stripeId;
+    }
+
+    public int getTax() {
+        return tax;
+    }
+
+    public void setTax(int tax) {
+        this.tax = tax;
     }
 }

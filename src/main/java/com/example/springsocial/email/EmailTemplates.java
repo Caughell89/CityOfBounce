@@ -120,11 +120,11 @@ public class EmailTemplates {
             + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'><img src='' alt='' width='160' style='border:0;'/></a>"
             + "<p style='"
             + "font-size: 10px;"
-            + "margin-top: 8px;"
+            + "margin-top: 4px;"
             + "margin-bottom: 0px;'>"
             + "&#xA9 " + year + " City of Bounce, Inc. All rights reserved"
             + "</p>"
-            + "<p style='font-size: 10px; margin-bottom: 4px;'>"
+            + "<p style='font-size: 10px; margin-bottom: 0px;'>"
             + "538 Richmond Ave. | Buffalo, NY"
             + "</p>"
             + "<p style='font-size: 12px; margin-bottom: 4px;'>"
@@ -252,6 +252,10 @@ public class EmailTemplates {
             System.out.println("How many products?");
             System.out.println(order.getOrderProducts().size());
             System.out.println(order.getOrderProducts().get(i).getPrice());
+            System.out.println("Order Day");
+            System.out.println(order.getEventDate());
+            System.out.println("Order Date");
+            System.out.println(order.getEventDate().getMonth().toString().substring(0,1)+order.getEventDate().getMonth().toString().toLowerCase().substring(1)+" " + order.getEventDate().getDayOfMonth() + " "+ order.getEventDate().getYear());
 
             System.out.println(order.getOrderProducts().get(i).getQuantity());
             System.out.println(order.getOrderProducts().get(i).getSalesTax());
@@ -350,7 +354,14 @@ public class EmailTemplates {
                 + "</tr>"
                 + "</table>"
                 + "</td>"
-                + "</tr>";
+                + "</tr>"
+                + "<table width='100%' style='border-spacing:0;broder-spacing: 0;'>"
+                + "<tr>"
+                + "<td style='padding:0;text-align:center;font-size:8px;padding-top:10px;padding-bottom:10px;'>"            
+                + "THIS EMAIL WAS SENT TO " + order.getEmail()
+                + "</td>"
+                + "</tr>"
+                + "</table>";
 
         msg.setContent(emailT + body + newFooter, "text/html");
         Transport.send(msg);

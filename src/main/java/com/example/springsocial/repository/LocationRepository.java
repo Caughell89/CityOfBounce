@@ -1,14 +1,16 @@
 package com.example.springsocial.repository;
 
 import com.example.springsocial.model.Location;
+import com.example.springsocial.model.SimpleLocation;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface LocationRepository extends JpaRepository<Location, Long> {
+    
+    
     
     ArrayList<Location> findLocationByPlaceAndStateAbbr(String place, String state_abbr);
 
@@ -41,5 +43,21 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
     @Query(value = FIND_LOCATIONS_BY_CITY, nativeQuery = true)
     public List<String> getLocationsByCity(String location);
     
+    public static final String FIND_LOCATIONS_BY_USER_INPUT = 
+            "SELECT distinct l.place, l.state, l.state_abbr FROM locations l "
+            + "WHERE l.place LIKE ?% AND l.state LIKE ?% OR l.place LIKE ?% "
+            + "AND l.state_abbr LIKE ?% ORDER BY l.place, l.state_abbr ASC;";
+
+    @Query(value = FIND_LOCATIONS_BY_USER_INPUT, nativeQuery = true)
+    public List<SimpleLoc> getLocationsByUserInput(String city1, String state, String city2, String stateAbbr);
+
+    
+   public static interface SimpleLoc {
+
+     String getPlace();
+     String getStateAbbr();
+     String getState();
+    
+  }
 
 }

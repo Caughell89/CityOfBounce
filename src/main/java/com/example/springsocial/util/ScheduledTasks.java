@@ -2,17 +2,14 @@ package com.example.springsocial.util;
 
 import com.example.springsocial.email.EmailTemplates;
 import com.example.springsocial.model.Order;
-import com.example.springsocial.model.Product;
+import com.example.springsocial.repository.MessageRepository;
 import com.example.springsocial.repository.OrderRepository;
 import com.example.springsocial.repository.ProductRepository;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +31,9 @@ public class ScheduledTasks {
 
     @Autowired
     private ProductRepository productRepository;
+    
+    @Autowired
+    private MessageRepository messageRepository;
 
     @Scheduled(cron = "0 5 20 * * *")
     void sendTodaysCustomerOrders() throws MessagingException, AddressException, IOException {
@@ -60,5 +60,10 @@ public class ScheduledTasks {
     @Scheduled(cron = "0 3 16 * * *")
     void someJob2() {
         System.out.println("Now is " + new Date());
+    }
+    
+    @Scheduled(cron = "0 3 16 * * *")
+    void pergeDeletedMessages() {
+        messageRepository.deleteOldMessages();
     }
 }

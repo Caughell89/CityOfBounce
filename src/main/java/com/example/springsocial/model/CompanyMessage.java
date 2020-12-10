@@ -36,7 +36,13 @@ public class CompanyMessage {
     
     boolean isRead = false;
     
+    @Column(nullable = true, updatable=true)
+    private LocalDateTime readAt;
+    
     boolean isDeleted = false;
+    
+    @Column(nullable = true, updatable=true)
+    private LocalDateTime deletedAt;
 
     public boolean isIsRead() {
         return isRead;
@@ -100,6 +106,22 @@ public class CompanyMessage {
 
     public void setMessageText(String messageText) {
         this.messageText = messageText;
+    }
+
+    public LocalDateTime getReadAt() {
+        return readAt;
+    }
+
+    public void setReadAt(LocalDateTime readAt) {
+        this.readAt = readAt;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
 }

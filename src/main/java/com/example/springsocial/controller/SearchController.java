@@ -1,12 +1,16 @@
 package com.example.springsocial.controller;
 
 
+import com.example.springsocial.model.Location;
 import com.example.springsocial.model.Product;
 import com.example.springsocial.model.ProductReview;
+import com.example.springsocial.model.SimpleLocation;
 import com.example.springsocial.repository.CompanyRepository;
 import com.example.springsocial.repository.LocationRepository;
+import com.example.springsocial.repository.LocationRepository.SimpleLoc;
 import com.example.springsocial.repository.ProductRepository;
 import com.example.springsocial.repository.ProductReviewRepository;
+import com.example.springsocial.repository.SimpleLocationRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +24,9 @@ public class SearchController {
     
     @Autowired
     private LocationRepository locationRepository;
+    
+    @Autowired
+    private SimpleLocationRepository simpleLocationRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -84,9 +91,22 @@ public class SearchController {
         return locationRepository.getAllActiveLocations();
     }
     
-    @GetMapping("/resource/locations={location}")
+    @GetMapping("/resource/location={location}")
     public List<String> getLocationsByCity(@PathVariable String location) {  
         return locationRepository.getLocationsByCity(location);
+    }
+    
+    @GetMapping("/resource/locations={location}")
+    public List<SimpleLocation> getLocationsByUserInput(@PathVariable String location) {
+        String[] splitLocation = location.split("\\,+");
+        String city = splitLocation[0].replace(",", "").trim();
+        String state = "";
+        if(splitLocation.length>1){
+              state = splitLocation[1].trim();
+        } 
+      
+        List<SimpleLocation> results = simpleLocationRepository.findByUserSearch(city, state);
+        return results;
     }
     
     @GetMapping("/resource/all-locations")

@@ -58,7 +58,8 @@ public class PaymentController {
         Stripe.apiKey = "sk_test_gXlNSy1TSr8wEhlc2eDIzyAl00uPeaMRms";
         System.out.println(payment.getPrice());
         System.out.println(payment.getStripeId());
-        int fees = (int) Math.round(payment.getPrice() * .029 + 100);
+        System.out.println(payment.getTax());
+        int fees = (int) Math.round(payment.getPrice() * .029 + 100 + payment.getTax());
         System.out.println(fees);
         List<Object> paymentMethodTypes
                 = new ArrayList<>();
