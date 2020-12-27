@@ -38,6 +38,8 @@ public class Product {
     
     @Column(nullable=false, name="quantity")
     private int quantity;
+   
+    
     
     @Column(nullable = true , name="capacity")
     private int capacity;
@@ -50,6 +52,9 @@ public class Product {
     
     @Column(nullable = true, name="height")
     private Float height;
+    
+    @Column(nullable = true, name="instant_book")
+    private boolean instantBook;
     
     @Column(nullable = true, name="material")
     private String material;
@@ -191,6 +196,14 @@ public class Product {
 
     public void setHeight(Float height) {
         this.height = height;
+    }
+
+    public boolean isInstantBook() {
+        return instantBook;
+    }
+
+    public void setInstantBook(boolean instantBook) {
+        this.instantBook = instantBook;
     }
 
     

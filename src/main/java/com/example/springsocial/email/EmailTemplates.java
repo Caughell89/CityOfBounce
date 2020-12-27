@@ -508,5 +508,114 @@ public class EmailTemplates {
         Transport.send(msg);
         System.out.println("Email sent!");
     }
+    
+    public void sendWelcomeEmail() throws AddressException, MessagingException, IOException {
+
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("cityofbounce@gmail.com", "aesqgdsbwydtozda");
+
+            }
+        });
+
+        Message msg = new MimeMessage(session);
+        msg.setFrom(new InternetAddress("cityofbounce@gmail.com", "City Of Bounce"));
+
+        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("Caughell89@yahoo.com"));
+        msg.setSubject("Thanks for Signing Up! - CityOfBounce");
+        String body = "<tr>"
+                + "<td style='padding:0;'>"
+                + "<table width='100%' style='border-spacing:0;broder-spacing: 0;'>"
+                + "<tr>"
+                + "<td class='three-columns' style='padding:0;text-align:center;font-size:0;padding-top:40px;padding-bottom:30px;'>"
+                + "<table class='column' style='border-spacing:0;width:100%;max-width:200px;display:inline-block;vertical-align:top;'>"
+                + "<tr>"
+                + "<td class='padding' style='padding:15px;'>"
+                + "<table class='content' style='border-spacing:0;font-size:15px;line-height:20px;'>"
+                + "<tr>"
+                + "<td style='padding:0;'>"
+                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1578968329/Company/Niagara_Falls-NY/Absolute_Tent_Rentals/Products/BounceHouse-2.png' alt='product' width='150' style='border:0;max-width: 150px;' class='third-img'></a>"
+                + "</td>"
+                + "</tr>"
+                + "<tr>"
+                + "<td style='padding:0;padding: 10px;'>"
+                + "<p style='font-size: 17px; font-weight: bold;'>"
+                + "O-G PRODUCT TITLE"
+                + "</p>"
+                + "<p>"
+                + "SOmetkinga product intof atha you might wanns Show"
+                + "</p>"
+                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'></a>"
+                + "</td>"
+                + "</tr>"
+                + "</table>"
+                + "</td>"
+                + "</tr>"
+                + "</table>"
+                + "<table class='column' style='border-spacing:0;width:100%;max-width:200px;display:inline-block;vertical-align:top;'>"
+                + "<tr>"
+                + "<td class='padding' style='padding:0;padding:15px;'>"
+                + "<table class='content' style='border-spacing:0;font-size:15px;line-height:20px;'>"
+                + "<tr>"
+                + "<td style='padding:0;'>"
+                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1578968329/Company/Niagara_Falls-NY/Absolute_Tent_Rentals/Products/BounceHouse-2.png' alt='product' width='150' style='border:0;max-width: 150px;' class='third-img'></a>"
+                + "</td>"
+                + "</tr>"
+                + "<tr>"
+                + "<td style='padding:0;padding: 10px;'>"
+                + "<p style='font-size: 17px; font-weight: bold;'>"
+                + "2ND PRODUCT TITLE"
+                + "</p>"
+                + "<p>"
+                + "SOmetkinga product intof atha you might wanns"
+                + "show"
+                + "</p>"
+                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'></a>"
+                + "</td>"
+                + "</tr>"
+                + "</table>"
+                + "</td>"
+                + "</tr>"
+                + "</table>"
+                + "<table class='column' style='border-spacing:0;width:100%;max-width:200px;display:inline-block;vertical-align:top;'>"
+                + "<tr>"
+                + "<td class='padding' style='padding:0;padding:15px;'>"
+                + "<table class='content' style='border-spacing:0;font-size:15px;line-height:20px;'>"
+                + "<tr>"
+                + "<td style='padding:0;'>"
+                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1578968329/Company/Niagara_Falls-NY/Absolute_Tent_Rentals/Products/BounceHouse-2.png' alt='product' width='150' style='border:0;max-width: 150px;' class='third-img-last'></a>"
+                + "</td>"
+                + "</tr>"
+                + "<tr>"
+                + "<td style='padding:0;padding: 10px;'>"
+                + "<p style='font-size: 17px; font-weight: bold;'>"
+                + "THIRD PRODUCT TITLE"
+                + "</p>"
+                + "<p>"
+                + "SOmetkinga product intof atha you might wanns"
+                + "show"
+                + "</p>"
+                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'></a>"
+                + "</td>"
+                + "</tr>"
+                + "</table>"
+                + "</td>"
+                + "</tr>"
+                + "</table>"
+                + "</td>"
+                + "</tr>"
+                + "</table>"
+                + "</td>"
+                + "</tr>";
+        msg.setContent(emailT + body + newFooter, "text/html");
+        Transport.send(msg);
+        System.out.println("Email sent!");
+    }
 
 }

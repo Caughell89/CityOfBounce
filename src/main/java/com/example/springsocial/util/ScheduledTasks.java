@@ -57,9 +57,10 @@ public class ScheduledTasks {
 
     }
 
-    @Scheduled(cron = "0 3 16 * * *")
+    @Scheduled(cron = "0 4 16 * * *")
     void someJob2() {
         System.out.println("Now is " + new Date());
+        emailTemplates.sendWelcomeEmail();
     }
     
     @Scheduled(cron = "0 3 16 * * *")
