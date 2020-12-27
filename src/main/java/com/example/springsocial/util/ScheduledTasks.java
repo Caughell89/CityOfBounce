@@ -58,7 +58,7 @@ public class ScheduledTasks {
     }
 
     @Scheduled(cron = "0 4 16 * * *")
-    void someJob2() {
+    void someJob2() throws MessagingException, IOException {
         System.out.println("Now is " + new Date());
         emailTemplates.sendWelcomeEmail();
     }
