@@ -105,6 +105,10 @@ public class CompanyController {
             throw new BadRequestException("This company has already been registered.");
         }
         Company savedCompany = companyRepository.save(company);
+        for(int i = 0; i < 7; i++ ){
+            companyRepository.setHours(savedCompany.getCompanyId(), i);
+
+        }
         Optional<User> optional = userRepository.findById(userId);
         User foundUser = optional.get();
         foundUser.setCompany(savedCompany);

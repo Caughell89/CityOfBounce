@@ -1,13 +1,9 @@
 package com.example.springsocial.controller;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
-import com.example.springsocial.exception.BadRequestException;
 import com.example.springsocial.exception.ResourceNotFoundException;
-import com.example.springsocial.model.Company;
 import com.example.springsocial.model.Employee;
-import com.example.springsocial.model.Location;
 import com.example.springsocial.model.User;
 import com.example.springsocial.repository.CompanyRepository;
 import com.example.springsocial.repository.EmployeeRepository;
@@ -15,20 +11,13 @@ import com.example.springsocial.repository.LocationRepository;
 import com.example.springsocial.repository.UserRepository;
 import com.example.springsocial.security.CurrentUser;
 import com.example.springsocial.security.UserPrincipal;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -101,12 +90,7 @@ public class UserController {
                 foundUser.setImageUrl(value.toString());
             }
         }
-        if(foundUser.getCompany().getCompanyId()!=null){
-        Optional<Employee> optionalE = employeeRepository.findByEmployeeEmail(user.getEmail());
-        Employee employee = optionalE.get();
-        employee.setEmployeePhoto(foundUser.getImageUrl());
-        employeeRepository.save(employee);
-        }
+
         System.out.println("attempting to save");
         userRepository.save(foundUser);
         return foundUser;

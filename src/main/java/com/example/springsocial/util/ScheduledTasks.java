@@ -57,14 +57,14 @@ public class ScheduledTasks {
 
     }
 
-    @Scheduled(cron = "0 4 16 * * *")
+    @Scheduled(cron = "0 20 15 * * *")
     void someJob2() throws MessagingException, IOException {
         System.out.println("Now is " + new Date());
         emailTemplates.sendWelcomeEmail();
     }
     
-    @Scheduled(cron = "0 3 16 * * *")
-    void pergeDeletedMessages() {
-        messageRepository.deleteOldMessages();
+    @Scheduled(fixedRate = 1740000)
+    void keepDynamosAlive() {
+        System.out.println("Now is " + new Date());
     }
 }

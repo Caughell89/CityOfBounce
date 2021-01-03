@@ -59,7 +59,14 @@ public class PaymentController {
         System.out.println(payment.getPrice());
         System.out.println(payment.getStripeId());
         System.out.println(payment.getTax());
-        int fees = (int) Math.round(payment.getPrice() * .029 + 100 + payment.getTax());
+        int total = (int) Math.round(payment.getPrice() *.15);
+        System.out.println("Total Payment made by the customer: " +payment.getPrice());
+        System.out.println("Totals Fees to get up to 15%: " + total);
+        int stripeFees = (int) Math.round(payment.getPrice()* .029 + 30);
+        System.out.println("Stripe fees: " + stripeFees);  
+        System.out.println("How much city of bounce would collect??: " + (total - stripeFees));
+        System.out.println("====");
+        int fees = total - stripeFees;
         System.out.println(fees);
         List<Object> paymentMethodTypes
                 = new ArrayList<>();

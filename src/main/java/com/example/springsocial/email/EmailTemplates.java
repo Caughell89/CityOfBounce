@@ -127,17 +127,17 @@ public class EmailTemplates {
             + "<p style='font-size: 10px; margin-bottom: 0px;'>"
             + "538 Richmond Ave. | Buffalo, NY"
             + "</p>"
-            + "<p style='font-size: 12px; margin-bottom: 4px;'>"
-            + "<a href='mailto:cityofbounce@gmail.com' style='text-decoration:none;color:#1cacc8;font-size:14px;cursor:pointer;'>cityofbounce@gmail.com</a>"
+            + "<p style='font-size: 10px; margin-bottom: 2px;'>"
+            + "<a href='mailto:cityofbounce@gmail.com' style='text-decoration:none;color:#1cacc8;font-size:10px;cursor:pointer;'>cityofbounce@gmail.com</a>"
             + "</p>"
-            + "<p style='font-size: 12px; margin-bottom: 4px;'>"
-            + "<a href='tel:+1-716-200-3543' style='text-decoration:none;color:#1cacc8;font-size:12px;'>716-200-3543</a>"
+            + "<p style='font-size: 10px; margin-bottom: 2px;'>"
+            + "<a href='tel:+1-716-200-3543' style='text-decoration:none;color:#1cacc8;font-size:10px;'>716-200-3543</a>"
             + "</p>"
             + "</td>"
             + "</tr>"
             + "<tr>"
             + "<td align='center' style='padding:0;padding-bottom: 25px; text-align: center;'>"
-            + "<p><a href='#' style='text-decoration:none;color:#b3b3b3;font-size:16px;font-size: 13px;'>UNSUBSCRIBE</a></p>"
+            + "<p><a rel='no-follow' href='https://cityofbounce.com/Account' style='text-decoration:none;color:#b3b3b3;font-size: 10px;'>UNSUBSCRIBE</a></p>"
             + "</td>"
             + "</tr>"
             + "<tr>"
@@ -245,67 +245,57 @@ public class EmailTemplates {
 
             }
         });
-        
+
         String productsHTML = "";
-        
-        for(int i = 0; i < order.getOrderProducts().size(); i++){
+
+        for (int i = 0; i < order.getOrderProducts().size(); i++) {
             System.out.println("How many products?");
             System.out.println(order.getOrderProducts().size());
             System.out.println(order.getOrderProducts().get(i).getPrice());
             System.out.println("Order Day");
             System.out.println(order.getEventDate());
             System.out.println("Order Date");
-            System.out.println(order.getEventDate().getMonth().toString().substring(0,1)+order.getEventDate().getMonth().toString().toLowerCase().substring(1)+" " + order.getEventDate().getDayOfMonth() + " "+ order.getEventDate().getYear());
+            System.out.println(order.getEventDate().getMonth().toString().substring(0, 1) + order.getEventDate().getMonth().toString().toLowerCase().substring(1) + " " + order.getEventDate().getDayOfMonth() + " " + order.getEventDate().getYear());
 
             System.out.println(order.getOrderProducts().get(i).getQuantity());
             System.out.println(order.getOrderProducts().get(i).getSalesTax());
             System.out.println(order.getOrderProducts().get(i).getOrderProductId());
             System.out.println(order.getOrderProducts().get(i).getProduct().getProductName());
             System.out.println(order.getOrderProducts().get(i).getProduct().getProductPhotos().get(0));
-            
-            
-            
-            
+
             productsHTML = productsHTML + "<table class='column' style='border-spacing:0;width:100%;max-width:200px;display:inline-block;vertical-align:top;'>"
-                + "<tr>"
-                + "<td class='padding' style='padding:0;padding:15px;'>"
-                + "<table class='content' style='border-spacing:0;font-size:15px;line-height:20px;'>"
-                + "<tr>"
-                + "<td style='padding:0;'>"
-                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'><img src='"+order.getOrderProducts().get(i).getProduct().getProductPhotos().get(0)+"'' alt='product' width='150' style='border:0;max-width: 150px;' class='third-img'></a>"
-                + "</td>"
-                + "</tr>"
-                + "<tr>"
-                + "<td style='padding:0;padding: 10px;'>"
-                + "<p style='font-size: 17px; font-weight: bold;'>"
-                + order.getOrderProducts().get(i).getProduct().getProductName()
-                + "</p>"
-                + "<p>"
-                + "Amount: "+ order.getOrderProducts().get(i).getQuantity()
-                + "</p>"
-                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'></a>"
-                + "</td>"
-                + "</tr>"
-                + "</table>"
-                + "</td>"
-                + "</tr>"
-                + "</table>";
-            
-            
-            
-            
-            
-            
+                    + "<tr>"
+                    + "<td class='padding' style='padding:0;padding:15px;'>"
+                    + "<table class='content' style='border-spacing:0;font-size:15px;line-height:20px;'>"
+                    + "<tr>"
+                    + "<td style='padding:0;'>"
+                    + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'><img src='" + order.getOrderProducts().get(i).getProduct().getProductPhotos().get(0) + "'' alt='product' width='150' style='border:0;max-width: 150px;' class='third-img'></a>"
+                    + "</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td style='padding:0;padding: 10px;'>"
+                    + "<p style='font-size: 17px; font-weight: bold;'>"
+                    + order.getOrderProducts().get(i).getProduct().getProductName()
+                    + "</p>"
+                    + "<p>"
+                    + "Amount: " + order.getOrderProducts().get(i).getQuantity()
+                    + "</p>"
+                    + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'></a>"
+                    + "</td>"
+                    + "</tr>"
+                    + "</table>"
+                    + "</td>"
+                    + "</tr>"
+                    + "</table>";
+
         }
-                
-                
-                
+
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress("cityofbounce@gmail.com", "City Of Bounce"));
 
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
         msg.setSubject("Thanks for your order!");
-        
+
         // Building the email body
         String body = "<tr>"
                 + "<td style='padding:15px;'>"
@@ -313,42 +303,41 @@ public class EmailTemplates {
                 + "<tr>"
                 + "<td style='padding-bottom:10px; font-weight:bold;'>Thanks for your order!    </td>"
                 + "</tr>"
-                 + "<tr>"
+                + "<tr>"
                 + "<td style='padding-bottom:4px; font-weight:bold;'>Event Details:    </td>"
-                + "</tr>"           
-                 + "<tr>"
-                + "<td>"+order.getCustomerName()+"</td>"
-                + "</tr>"   
-                 + "<tr>"
-                + "<td>"+ order.getEventDate().getDayOfWeek().toString().substring(0,1)+order.getEventDate().getDayOfWeek().toString().toLowerCase().substring(1)+"</td>"
-                + "</tr>"
-                 + "<tr>"
-                + "<td>"+order.getEventDate().getMonth().toString().substring(0,1)+order.getEventDate().getMonth().toString().toLowerCase().substring(1)+" " + order.getEventDate().getDayOfMonth() + " "+ order.getEventDate().getYear() +"</td>"
                 + "</tr>"
                 + "<tr>"
-                + "<td>"+order.getAddress()+"</td>"
+                + "<td>" + order.getCustomerName() + "</td>"
                 + "</tr>"
                 + "<tr>"
-                + "<td>"+order.getCity()+", "+ order.getState()+ " " +order.getZipcode()+"</td>"
+                + "<td>" + order.getEventDate().getDayOfWeek().toString().substring(0, 1) + order.getEventDate().getDayOfWeek().toString().toLowerCase().substring(1) + "</td>"
+                + "</tr>"
+                + "<tr>"
+                + "<td>" + order.getEventDate().getMonth().toString().substring(0, 1) + order.getEventDate().getMonth().toString().toLowerCase().substring(1) + " " + order.getEventDate().getDayOfMonth() + " " + order.getEventDate().getYear() + "</td>"
+                + "</tr>"
+                + "<tr>"
+                + "<td>" + order.getAddress() + "</td>"
+                + "</tr>"
+                + "<tr>"
+                + "<td>" + order.getCity() + ", " + order.getState() + " " + order.getZipcode() + "</td>"
                 + "</tr>"
                 + "<tr>"
                 + "<td style='padding-top:8px; padding-bottom:4px; font-weight:bold;'>Contact Info:</td>"
                 + "</tr>"
                 + "<tr>"
-                + "<td>"+order.getEmail()+"</td>"
+                + "<td>" + order.getEmail() + "</td>"
                 + "</tr>"
                 + "<tr>"
-                + "<td style='padding-top:4px;'>"+order.getPhone()+"</td>"
+                + "<td style='padding-top:4px;'>" + order.getPhone() + "</td>"
                 + "</tr>"
                 + "</table>"
                 + "</td>"
-                + "</tr>"          
+                + "</tr>"
                 + "<tr>"
                 + "<td style='padding:0;'>"
                 + "<table width='100%' style='border-spacing:0;broder-spacing: 0;'>"
                 + "<tr>"
                 + "<td class='three-columns' style='padding:0;text-align:center;font-size:0;padding-top:40px;padding-bottom:30px;'>"
-              
                 + productsHTML
                 + "</td>"
                 + "</tr>"
@@ -357,7 +346,7 @@ public class EmailTemplates {
                 + "</tr>"
                 + "<table width='100%' style='border-spacing:0;broder-spacing: 0;'>"
                 + "<tr>"
-                + "<td style='padding:0;text-align:center;font-size:8px;padding-top:10px;padding-bottom:10px;'>"            
+                + "<td style='padding:0;text-align:center;font-size:8px;padding-top:10px;padding-bottom:10px;'>"
                 + "THIS EMAIL WAS SENT TO " + order.getEmail()
                 + "</td>"
                 + "</tr>"
@@ -398,26 +387,25 @@ public class EmailTemplates {
                 + "<tr>"
                 + "<td style='padding-bottom:10px;'>The day is finally here!</td>"
                 + "</tr>"
-                 + "<tr>"
+                + "<tr>"
                 + "<td style='padding-bottom:10px;'>Your event is only hours away...We hope you and your guests have a great time! </td>"
                 + "</tr>"
-                 + "<tr>"
+                + "<tr>"
                 + "<td >Order Details:</td>"
-                + "</tr>"           
-                 + "<tr>"
-                + "<td>"+order.getCustomerName()+"</td>"
                 + "</tr>"
                 + "<tr>"
-                + "<td>"+order.getAddress()+"</td>"
+                + "<td>" + order.getCustomerName() + "</td>"
                 + "</tr>"
                 + "<tr>"
-                + "<td>"+order.getCity()+", "+ order.getState()+ " " +order.getZipcode()+"</td>"
+                + "<td>" + order.getAddress() + "</td>"
+                + "</tr>"
+                + "<tr>"
+                + "<td>" + order.getCity() + ", " + order.getState() + " " + order.getZipcode() + "</td>"
                 + "</tr>"
                 + "</table>"
                 + "</td>"
                 + "</tr>"
-                
-               + "<tr>"
+                + "<tr>"
                 + "<td style='padding:0;'>"
                 + "<table width='100%' style='border-spacing:0;broder-spacing: 0;'>"
                 + "<tr>"
@@ -502,13 +490,12 @@ public class EmailTemplates {
                 + "</td>"
                 + "</tr>";
 
-       
         msg.setContent(emailT + body + newFooter, "text/html");
 
         Transport.send(msg);
         System.out.println("Email sent!");
     }
-    
+
     public void sendWelcomeEmail() throws AddressException, MessagingException, IOException {
 
         Properties props = new Properties();
@@ -528,8 +515,21 @@ public class EmailTemplates {
         msg.setFrom(new InternetAddress("cityofbounce@gmail.com", "City Of Bounce"));
 
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("Caughell89@yahoo.com"));
-        msg.setSubject("Thanks for Signing Up! - CityOfBounce");
+        msg.setSubject("Thanks for Signing Up!  ");
         String body = "<tr>"
+                + "<td style='text-align:center;'>"
+                + "<h2>Welcome to the CityOfBounce</h2>"
+                + "</td>"
+                + "</tr>"
+                + "<tr>"
+                + "<tr>"
+                + "<td style='text-align:center; padding-left:20px; padding-right:20px;'>"
+                + "<p>At CityOfBounce we belive throwing a party should be fun.  "
+                + "We aim to connect event planners with local event and party rental "
+                + "companies to provide a seemless frustration free ordering and delivery process.</p>"
+                + "</td>"
+                + "</tr>"
+                + "<tr>"
                 + "<td style='padding:0;'>"
                 + "<table width='100%' style='border-spacing:0;broder-spacing: 0;'>"
                 + "<tr>"
@@ -540,18 +540,20 @@ public class EmailTemplates {
                 + "<table class='content' style='border-spacing:0;font-size:15px;line-height:20px;'>"
                 + "<tr>"
                 + "<td style='padding:0;'>"
-                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1578968329/Company/Niagara_Falls-NY/Absolute_Tent_Rentals/Products/BounceHouse-2.png' alt='product' width='150' style='border:0;max-width: 150px;' class='third-img'></a>"
+                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1601314981/HomePage2_n6pqid.jpg' alt='product' width='150' style='border:0;max-width: 150px;' class='third-img'></a>"
                 + "</td>"
                 + "</tr>"
                 + "<tr>"
-                + "<td style='padding:0;padding: 10px;'>"
+                + "<td style='padding: 4px 10px;'>"
                 + "<p style='font-size: 17px; font-weight: bold;'>"
-                + "O-G PRODUCT TITLE"
+                + "THROW A PARTY"
                 + "</p>"
-                + "<p>"
-                + "SOmetkinga product intof atha you might wanns Show"
+                + "<p style='font-size:11px;'>"
+                + "Search for products from various local companies"
                 + "</p>"
-                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'></a>"
+                + "<tr>"
+                + "<td align='center' style='border-radius: 3px;' bgcolor:#1cacc8;background:linear-gradient(45deg, #1cacc8 0%, #16889c 100%);'><a rel='no_follow' href='https://cityofbounce.com' target='_blank' style='font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: #1cacc8; text-decoration: none ;border-radius: 3px; padding: 12px 18px; border: 1px solid #1cacc8; display: inline-block;'>Search</a></td>"
+                + "</tr>"
                 + "</td>"
                 + "</tr>"
                 + "</table>"
@@ -564,44 +566,20 @@ public class EmailTemplates {
                 + "<table class='content' style='border-spacing:0;font-size:15px;line-height:20px;'>"
                 + "<tr>"
                 + "<td style='padding:0;'>"
-                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1578968329/Company/Niagara_Falls-NY/Absolute_Tent_Rentals/Products/BounceHouse-2.png' alt='product' width='150' style='border:0;max-width: 150px;' class='third-img'></a>"
+                + "<a rel='nofollow' href='https://cityofbounce.com/registerCompany' style='text-decoration:none;color:blue;font-size:16px;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1603726421/bpt_6_24_45_emftjl.jpg' alt='register company' width='150' style='border:0;max-width: 150px;' class='third-img'></a>"
                 + "</td>"
                 + "</tr>"
                 + "<tr>"
-                + "<td style='padding:0;padding: 10px;'>"
+                + "<td style='padding:0;padding: 4px 10px;'>"
                 + "<p style='font-size: 17px; font-weight: bold;'>"
-                + "2ND PRODUCT TITLE"
+                + "SET UP SHOP"
                 + "</p>"
-                + "<p>"
-                + "SOmetkinga product intof atha you might wanns"
-                + "show"
+                + "<p style='font-size:11px;'>"
+                + "Register your company to offer event rentals"
                 + "</p>"
-                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'></a>"
-                + "</td>"
-                + "</tr>"
-                + "</table>"
-                + "</td>"
-                + "</tr>"
-                + "</table>"
-                + "<table class='column' style='border-spacing:0;width:100%;max-width:200px;display:inline-block;vertical-align:top;'>"
                 + "<tr>"
-                + "<td class='padding' style='padding:0;padding:15px;'>"
-                + "<table class='content' style='border-spacing:0;font-size:15px;line-height:20px;'>"
-                + "<tr>"
-                + "<td style='padding:0;'>"
-                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1578968329/Company/Niagara_Falls-NY/Absolute_Tent_Rentals/Products/BounceHouse-2.png' alt='product' width='150' style='border:0;max-width: 150px;' class='third-img-last'></a>"
-                + "</td>"
+                + "<td align='center' style='border-radius: 3px;' bgcolor:#1cacc8;background:linear-gradient(45deg, #1cacc8 0%, #16889c 100%);'><a rel='no_follow' href='https://cityofbounce.com' target='_blank' style='font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: #1cacc8; text-decoration: none ;border-radius: 3px; padding: 12px 18px; border: 1px solid #1cacc8; display: inline-block;'>Register</a></td>"
                 + "</tr>"
-                + "<tr>"
-                + "<td style='padding:0;padding: 10px;'>"
-                + "<p style='font-size: 17px; font-weight: bold;'>"
-                + "THIRD PRODUCT TITLE"
-                + "</p>"
-                + "<p>"
-                + "SOmetkinga product intof atha you might wanns"
-                + "show"
-                + "</p>"
-                + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'></a>"
                 + "</td>"
                 + "</tr>"
                 + "</table>"

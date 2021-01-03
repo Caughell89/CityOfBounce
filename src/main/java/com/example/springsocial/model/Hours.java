@@ -11,20 +11,23 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "hours")
 public class Hours {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name="company_id")
+    @Column(nullable = false, name = "company_id")
     private Long companyId;
-    
+
     @Column(nullable = false)
     private int day;
 
+    @Column(nullable = false, columnDefinition = "tinyint(1) default 0")
+    private boolean isOpen;
+
     @Column(nullable = true)
     private Time openTime;
-    
+
     @Column(nullable = true)
     private Time closeTime;
 
@@ -68,10 +71,12 @@ public class Hours {
         this.closeTime = closeTime;
     }
 
-    
-   
+    public boolean isIsOpen() {
+        return isOpen;
+    }
 
+    public void setIsOpen(boolean isOpen) {
+        this.isOpen = isOpen;
+    }
 
-    
 }
-

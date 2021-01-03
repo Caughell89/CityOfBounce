@@ -1,13 +1,13 @@
 spring:    
 
-  datasource:
-    url: jdbc:mysql://localhost:3306/city_of_bounce?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=EST
-    username: root
-    password: =Heat4044
 #  datasource:
-#    url: jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_5d9109e69eca09f?reconnect=true&useSSL=false&serverTimezone=EST
-#    username: b710639b29086c
-#    password: 31dfd9aa
+#    url: jdbc:mysql://localhost:3306/city_of_bounce?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=EST
+#    username: root
+#    password: =Heat4044
+  datasource:
+    url: jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_5d9109e69eca09f?reconnect=true&useSSL=false&serverTimezone=EST
+    username: b710639b29086c
+    password: 31dfd9aa
 
       
   mail:
