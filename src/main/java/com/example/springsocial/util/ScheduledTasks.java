@@ -65,6 +65,9 @@ public class ScheduledTasks {
     
     @Scheduled(fixedRate = 1740000)
     void keepDynamosAlive() {
-        System.out.println("Now is " + new Date());
+        int orderCount = orderRepository.getOrderCount();
+        //Send an Email?
+        System.out.println("New orders for the day!");
+        System.out.println(orderCount);
     }
 }

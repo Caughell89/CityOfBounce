@@ -5,6 +5,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.example.springsocial.exception.BadRequestException;
 import com.example.springsocial.model.Company;
 import com.example.springsocial.model.Employee;
+import com.example.springsocial.model.Hours;
 import com.example.springsocial.model.Location;
 import com.example.springsocial.model.Order;
 import com.example.springsocial.model.Product;
@@ -12,6 +13,7 @@ import com.example.springsocial.model.PublicCompany;
 import com.example.springsocial.model.User;
 import com.example.springsocial.repository.CompanyRepository;
 import com.example.springsocial.repository.EmployeeRepository;
+import com.example.springsocial.repository.HourRepository;
 import com.example.springsocial.repository.LocationRepository;
 import com.example.springsocial.repository.OrderRepository;
 import com.example.springsocial.repository.ProductRepository;
@@ -53,6 +55,9 @@ public class CompanyController {
     
     @Autowired
     private OrderRepository orderRepository;
+    
+    @Autowired
+    private HourRepository hourRepository;
 
     Cloudinary cloud = new Cloudinary(ObjectUtils.asMap(
             "cloud_name", "city-of-bounce",
@@ -302,6 +307,16 @@ public class CompanyController {
     public Company getPublicCompanyById(@PathVariable Long companyId) {
         System.out.println("TESTing company public get");
         return companyRepository.getCompanyByCompanyId(companyId);
+    }
+    
+    //DEALING WITH COMPANY HOURS
+    @RequestMapping(value = "/updateHours")
+    public List<Hours> updateCompanyHours(@RequestBody List<Hours> hours) {
+        System.out.println("Updating hours");
+        for (Hours h : hours) {
+            hourRepository.save(h);
+        }
+        return hours;
     }
 
 }

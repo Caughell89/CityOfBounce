@@ -59,4 +59,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     //@Query(value = GET_ORDERS_BY_DATE, nativeQuery = true)
     public ArrayList<Order> findByEventDate(LocalDateTime date);
+
+    public static final String GET_NEW_ORDERS_COUNT = "SELECT COUNT(*) FROM orders WHERE DATE(created_on) = DATE(NOW());";
+    
+    @Query(value = GET_NEW_ORDERS_COUNT, nativeQuery = true)
+    public int getOrderCount();
 }
