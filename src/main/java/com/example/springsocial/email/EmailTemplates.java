@@ -4,11 +4,9 @@ import com.example.springsocial.model.Company;
 import com.example.springsocial.model.Order;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -518,13 +516,13 @@ public class EmailTemplates {
         msg.setSubject("Thanks for Signing Up!  ");
         String body = "<tr>"
                 + "<td style='text-align:center;'>"
-                + "<h2>Welcome to the CityOfBounce</h2>"
+                + "<h2>Welcome to the City of Bounce</h2>"
                 + "</td>"
                 + "</tr>"
                 + "<tr>"
                 + "<tr>"
                 + "<td style='text-align:center; padding-left:20px; padding-right:20px;'>"
-                + "<p>At CityOfBounce we belive throwing a party should be fun.  "
+                + "<p>At City of Bounce we belive throwing a party should be fun.  "
                 + "We aim to connect event planners with local event and party rental "
                 + "companies to provide a seemless frustration free ordering and delivery process.</p>"
                 + "</td>"

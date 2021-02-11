@@ -3,6 +3,7 @@ package com.example.springsocial.controller;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.springsocial.exception.BadRequestException;
+import com.example.springsocial.model.BlockedDate;
 import com.example.springsocial.model.Company;
 import com.example.springsocial.model.Employee;
 import com.example.springsocial.model.Hours;
@@ -11,6 +12,7 @@ import com.example.springsocial.model.Order;
 import com.example.springsocial.model.Product;
 import com.example.springsocial.model.PublicCompany;
 import com.example.springsocial.model.User;
+import com.example.springsocial.repository.BlockedDateRepository;
 import com.example.springsocial.repository.CompanyRepository;
 import com.example.springsocial.repository.EmployeeRepository;
 import com.example.springsocial.repository.HourRepository;
@@ -58,6 +60,9 @@ public class CompanyController {
     
     @Autowired
     private HourRepository hourRepository;
+    
+    @Autowired
+    private BlockedDateRepository blockedDateRepository;
 
     Cloudinary cloud = new Cloudinary(ObjectUtils.asMap(
             "cloud_name", "city-of-bounce",
@@ -317,6 +322,27 @@ public class CompanyController {
             hourRepository.save(h);
         }
         return hours;
+    }
+    
+
+    @RequestMapping(value = "/updateBlockedDates/remove/{companyId}/{date}")
+    public void deleteCompanyBlockedDate(@PathVariable Long companyId, @PathVariable String date) {
+        System.out.println("Deleting BlockedDate!");
+        blockedDateRepository.deleteByCompanyIdAndDate(companyId, date);
+        System.out.println(companyId);
+        System.out.println(date);
+        
+        //return blockedDate;
+    }
+    
+    @RequestMapping(value = "/updateBlockedDates/add/{companyId}/{date}")
+    public void addCompanyBlockedDate(@PathVariable Long companyId, @PathVariable String date) {
+        System.out.println("Adding BlockedDate!");
+        blockedDateRepository.addByCompanyIdAndDate(companyId, date);
+        System.out.println(companyId);
+        System.out.println(date);
+        
+        //return blockedDate;
     }
 
 }

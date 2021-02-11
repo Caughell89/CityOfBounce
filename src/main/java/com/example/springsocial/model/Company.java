@@ -4,9 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,9 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Formula;
 
 
 @Entity
@@ -51,12 +49,6 @@ public class Company {
     @Column
     private LocalDateTime createdOn;
     
-    @ElementCollection
-    @CollectionTable(name="pending_employees", joinColumns=@JoinColumn(name="company_id"))
-    @Column(name="email")
-    private List<String> pendingEmployees = new ArrayList<>();
-    
-    
     @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name="companies_areas",joinColumns=@JoinColumn(name="company_id"),inverseJoinColumns=@JoinColumn(name="zip_id"))
     private List<Location> areas = new ArrayList<>();
@@ -77,7 +69,13 @@ public class Company {
     @JoinColumn(name="company_id")
     private List<CompanyMessage> companyMessages = new ArrayList<>();
     
-
+    
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="company_id")
+    @OrderBy("blocked_date asc")
+    private List<BlockedDate> blockedDates = new ArrayList<>();
+ 
+    
     public String getCompanyName() {
         return companyName;
     }
@@ -143,14 +141,6 @@ public class Company {
         this.areas = areas;
     } 
 
-    public List<String> getPendingEmployees() {
-        return pendingEmployees;
-    }
-
-    public void setPendingEmployees(List<String> pendingEmployees) {
-        this.pendingEmployees = pendingEmployees;
-    }
-
     public List<Employee> getEmployees() {
         return employees;
     }
@@ -191,7 +181,12 @@ public class Company {
         this.companyMessages = companyMessages;
     }
 
+    public List<BlockedDate> getBlockedDates() {
+        return blockedDates;
+    }
 
-
+    public void setBlockedDates(List<BlockedDate> blockedDates) {
+        this.blockedDates = blockedDates;
+    }
     
 }

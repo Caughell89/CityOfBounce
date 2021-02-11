@@ -1,12 +1,13 @@
 package com.example.springsocial.repository;
 
 import com.example.springsocial.model.CompanyMessage;
+import com.example.springsocial.model.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface MessageRepository extends JpaRepository<CompanyMessage, Long> {
+public interface MessageRepository extends JpaRepository<Message, Long> {
 
     public static final String MARK_AS_READ = "UPDATE company_messages SET is_read = 1, read_at = NOW() WHERE message_id = ?;";
     
@@ -35,5 +36,12 @@ public interface MessageRepository extends JpaRepository<CompanyMessage, Long> {
     @Modifying
     @Query(value = MARK_AS_NOT_DELETED, nativeQuery = true)
     public void setNotDeleted(Long messageId);
+
+    public static final String SET_CONVO_INFO = "UPDATE convo_users SET last_viewed = NOW() WHERE user_id= ? AND  convo_id = ?;";
+
+    @Transactional
+    @Modifying
+    @Query(value = SET_CONVO_INFO, nativeQuery = true)
+    public void setConvoInfo(Long userId, Long convoId);
     
 }

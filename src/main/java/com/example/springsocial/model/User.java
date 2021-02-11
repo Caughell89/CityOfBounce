@@ -1,8 +1,10 @@
 package com.example.springsocial.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDateTime;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -64,16 +66,17 @@ public class User {
     @Column
     @ColumnDefault("'native'")
     private String providerId;
-    
+
     @Column
     @ColumnDefault("'User'")
     private String role;
 
     @ManyToOne()
-    @JoinColumn(name="company_id")
+    @JoinColumn(name = "company_id")
     private Company company;
     
-    
+
+
     public Long getId() {
         return id;
     }
@@ -178,14 +181,6 @@ public class User {
         this.lastLogin = lastLogin;
     }
 
-//    public Employee getEmployee() {
-//        return employee;
-//    }
-//
-//    public void setEmployee(Employee employee) {
-//        this.employee = employee;
-//    }
-
     public String getRole() {
         return role;
     }
@@ -201,5 +196,7 @@ public class User {
     public void setCompany(Company company) {
         this.company = company;
     }
+
+
 
 }

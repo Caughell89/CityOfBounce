@@ -63,10 +63,12 @@ public class ScheduledTasks {
         emailTemplates.sendWelcomeEmail();
     }
     
-    @Scheduled(fixedRate = 1740000)
+     @Scheduled(cron = "0 29 * * * *")
     void keepDynamosAlive() {
         int orderCount = orderRepository.getOrderCount();
         //Send an Email?
+        System.out.println("Now is " + new Date());
+
         System.out.println("New orders for the day!");
         System.out.println(orderCount);
     }
