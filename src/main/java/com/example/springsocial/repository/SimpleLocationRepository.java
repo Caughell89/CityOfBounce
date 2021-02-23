@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface SimpleLocationRepository  {
     
-    List<SimpleLocation> findByUserSearch(String city, String state);
+    List<SimpleLocation> findByInputSearch(String city, String state);
 
     
 }

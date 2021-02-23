@@ -83,7 +83,8 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     public Company getCompanyByCompanyId(Long companyId);
 
-     
+    @Transactional
+    @Modifying 
     @Query(value = SET_HOURS, nativeQuery = true)
     public void setHours(Long company_id, int day);
     

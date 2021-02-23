@@ -9,14 +9,14 @@ import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-     public static final String FIND_PRODUCTS_BY_ZIP = "SELECT * "
-             + "FROM products p JOIN companies c ON p.company_id=c.company_id "
-             + "JOIN companies_areas ca ON c.company_id=ca.company_id "
-             + "JOIN locations l ON ca.zip_id=l.zip_code WHERE ca.zip_id = ?;";
+    public static final String FIND_PRODUCTS_BY_ZIP = "SELECT * "
+            + "FROM products p JOIN companies c ON p.company_id=c.company_id "
+            + "JOIN companies_areas ca ON c.company_id=ca.company_id "
+            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE ca.zip_id = ?;";
 
     @Query(value = FIND_PRODUCTS_BY_ZIP, nativeQuery = true)
     public List<Product> getProductsByZip(int zip);
-    
+
     public static final String FIND_PRODUCTS = "SELECT * FROM products WHERE "
             + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
             + "JOIN companies c ON p.company_id=c.company_id "
@@ -26,7 +26,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = FIND_PRODUCTS, nativeQuery = true)
     public List<Product> getProductsBySearchString(String city, String state);
-    
+
     public static final String FIND_PRODUCTS_PHOTOS = "SELECT * "
             + "FROM products_photos WHERE product_id = ?;";
 
@@ -38,20 +38,53 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = FIND_PRODUCT_REVIEWS_BY_PRODUCT_ID, nativeQuery = true)
     public List<ProductReview> getProductReviewsByProductId(Long productId);
-    
-     public static final String FIND_FILTERED_PRODUCTS = "SELECT * FROM products WHERE "
-            + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
-            + "JOIN companies c ON p.company_id=c.company_id "
-            + "JOIN companies_areas ca ON c.company_id=ca.company_id "
-            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=? "
-            + "AND l.state_abbr = ? AND p.price >= ? AND p.price <= ?);";
 
-    @Query(value = FIND_FILTERED_PRODUCTS, nativeQuery = true)
-    public List<Product> findProductsBySearchFilters(String city, String state, 
-            double minPrice, double maxPrice);
-    
     public static final String FIND_PRODUCTS_BY_ORDER_ID = "SELECT * FROM products WHERE order_id = ?;";
 
     @Query(value = FIND_PRODUCTS_BY_ORDER_ID, nativeQuery = true)
     public List<Product> findProductsByOrderId(Long orderId);
+    
+//  SORTING QUERIES
+//  ================
+    
+    public static final String FIND_FILTERED_PRODUCTS_SORTED_BY_CREATED_ON = "SELECT * FROM products WHERE "
+            + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
+            + "JOIN companies c ON p.company_id=c.company_id "
+            + "JOIN companies_areas ca ON c.company_id=ca.company_id "
+            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=? "
+            + "AND l.state_abbr = ? AND instant_book = ?) ORDER BY created_on DESC LIMIT ?, ? ;";
+
+    @Query(value = FIND_FILTERED_PRODUCTS_SORTED_BY_CREATED_ON, nativeQuery = true)
+    public List<Product> findProductsBySearchFiltersSortedByCreatedOn(String city, String state, boolean instantBook, int row, int i);
+
+    public static final String FIND_FILTERED_PRODUCTS_SORTED_BY_PRICE_ASC = "SELECT * FROM products WHERE "
+            + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
+            + "JOIN companies c ON p.company_id=c.company_id "
+            + "JOIN companies_areas ca ON c.company_id=ca.company_id "
+            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=? "
+            + "AND l.state_abbr = ? AND instant_book = ?) ORDER BY price LIMIT ?, ? ;";
+
+    @Query(value = FIND_FILTERED_PRODUCTS_SORTED_BY_PRICE_ASC, nativeQuery = true)
+    public List<Product> findProductsBySearchFiltersPriceAsc(String city, String state, boolean instantBook, int row, int limit);
+
+    public static final String FIND_FILTERED_PRODUCTS_SORTED_BY_PRICE_DESC = "SELECT * FROM products WHERE "
+            + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
+            + "JOIN companies c ON p.company_id=c.company_id "
+            + "JOIN companies_areas ca ON c.company_id=ca.company_id "
+            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=? "
+            + "AND l.state_abbr = ? AND instant_book = ?) ORDER BY price DESC LIMIT ?, ? ;";
+
+    @Query(value = FIND_FILTERED_PRODUCTS_SORTED_BY_PRICE_DESC, nativeQuery = true)
+    public List<Product> findProductsBySearchFiltersSortedByPriceDesc(String city, String state, boolean instantBook, int row, int limit);
+
+    
+    public static final String FIND_FILTERED_PRODUCTS = "SELECT * FROM products WHERE "
+            + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
+            + "JOIN companies c ON p.company_id=c.company_id "
+            + "JOIN companies_areas ca ON c.company_id=ca.company_id "
+            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=? "
+            + "AND l.state_abbr = ? AND instant_book = ?) LIMIT ?, ? ;";
+    @Query(value = FIND_FILTERED_PRODUCTS, nativeQuery = true)
+    public List<Product> findProductsBySearchFilters(String city, String state, boolean instantBook, int row, int i);
+
 }

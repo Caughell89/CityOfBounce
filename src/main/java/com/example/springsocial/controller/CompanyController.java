@@ -140,8 +140,11 @@ public class CompanyController {
             System.out.println(locations.get(i).getZipCode());
             companyRepository.saveLocation(savedCompany.getCompanyId(), locations.get(i).getZipCode());
         }
-
-        return savedCompany;
+        
+         Optional<Company> o = companyRepository.findById(savedCompany.getCompanyId());
+        Company foundCompany = o.get();
+        
+        return foundCompany;
     }
 
     @RequestMapping(value = "company/updateLogo", method = RequestMethod.PUT)

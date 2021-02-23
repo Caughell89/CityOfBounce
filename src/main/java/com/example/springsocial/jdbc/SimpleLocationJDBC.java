@@ -14,7 +14,7 @@ public class SimpleLocationJDBC implements SimpleLocationRepository {
     private JdbcTemplate jdbcTemplate;
     
     @Override
-    public List<SimpleLocation> findByUserSearch(String place, String state) {
+    public List<SimpleLocation> findByInputSearch(String place, String state) {
         return jdbcTemplate.query(
                 "SELECT DISTINCT place, state, state_abbr FROM locations WHERE "
                         + "place LIKE ? AND state LIKE ? OR place LIKE ? AND "

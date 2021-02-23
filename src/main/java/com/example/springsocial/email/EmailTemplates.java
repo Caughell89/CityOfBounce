@@ -75,12 +75,8 @@ public class EmailTemplates {
             + "</tr>"
             + "</table>"
             + "</td>"
-            + "</tr>"
-            + "<tr>"
-            + "<td style='padding:0;'>"
-            + "<a href='#' style='text-decoration:none;color:blue;font-size:16px;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1604618932/EmailBanner.png' alt='Banner' width='600' style='border:0;max-width: 100%;'></a>"
-            + "</td>"
             + "</tr>";
+           
 
     String newFooter
             = "<tr>"
@@ -99,9 +95,9 @@ public class EmailTemplates {
             + "'>"
             + "Connect with us"
             + "</p>"
-            + "<a href='https://www.facebook.com/cityofbounce' style='text-decoration:none;font-size:16px;margin:8px; height:24px; width;auto;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1600184987/facebook.png' alt='facebook link'  style='border:0;'></a>"
-            + "<a href='https://twitter.com/CityOfBounce' style='text-decoration:none;font-size:16px;margin:8px;height:24px; width;auto;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1600184952/twitter.png' alt='twitter link'  style='border:0;'></a>"
-            + "<a href='https://www.instagram.com/cityofbounce' style='text-decoration:none;font-size:16px;margin:8px;height:24px; width;auto;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1600184974/instagram.png' alt='instagram link' style='border:0;'></a>"
+            + "<a href='https://www.facebook.com/cityofbounce' style='text-decoration:none;font-size:16px;margin:8px; height:16px; width;auto;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1600184987/facebook.png' alt='facebook link'  style='border:0;'></a>"
+            + "<a href='https://twitter.com/CityOfBounce' style='text-decoration:none;font-size:16px;margin:8px;height:16px; width;auto;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1600184952/twitter.png' alt='twitter link'  style='border:0;'></a>"
+            + "<a href='https://www.instagram.com/cityofbounce' style='text-decoration:none;font-size:16px;margin:8px;height:16px; width;auto;'><img src='https://res.cloudinary.com/city-of-bounce/image/upload/v1600184974/instagram.png' alt='instagram link' style='border:0;'></a>"
             + "</td>"
             + "</tr>"
             + "</table>"
@@ -335,7 +331,7 @@ public class EmailTemplates {
                 + "<td style='padding:0;'>"
                 + "<table width='100%' style='border-spacing:0;broder-spacing: 0;'>"
                 + "<tr>"
-                + "<td class='three-columns' style='padding:0;text-align:center;font-size:0;padding-top:40px;padding-bottom:30px;'>"
+                + "<td class='three-columns' style='padding:0;text-align:center;font-size:0;padding-top:20px;padding-bottom:30px;'>"
                 + productsHTML
                 + "</td>"
                 + "</tr>"

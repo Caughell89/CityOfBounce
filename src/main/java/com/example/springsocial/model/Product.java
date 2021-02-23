@@ -1,5 +1,6 @@
 package com.example.springsocial.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CollectionTable;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hibernate.annotations.CreationTimestamp;
 
 
 @Entity
@@ -64,6 +66,10 @@ public class Product {
     
     @Column(nullable = true, name="product_description", columnDefinition="TEXT")
     private String description;
+    
+    @CreationTimestamp
+    @Column
+    private LocalDateTime createdOn;
     
     
     @ElementCollection(fetch = FetchType.EAGER)
@@ -204,6 +210,14 @@ public class Product {
 
     public void setInstantBook(boolean instantBook) {
         this.instantBook = instantBook;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
     }
 
     
