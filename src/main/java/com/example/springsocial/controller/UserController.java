@@ -12,12 +12,15 @@ import com.example.springsocial.repository.UserRepository;
 import com.example.springsocial.security.CurrentUser;
 import com.example.springsocial.security.UserPrincipal;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -96,6 +99,25 @@ public class UserController {
         return foundUser;
 
     }
+    
+    @RequestMapping(value = "/user/notifications/{userId}", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('USER')")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public List updateCurrentUser(@PathVariable Long userId) {
+
+        List notifications = new ArrayList();
+        notifications.add("Hey");
+                notifications.add("Yo");
+                        notifications.add("Lets");
+                                notifications.add("go");
+
+
+
+        return notifications;
+    }
+    
+    
 
     
 
