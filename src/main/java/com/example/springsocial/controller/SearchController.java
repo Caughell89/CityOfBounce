@@ -2,6 +2,7 @@ package com.example.springsocial.controller;
 
 import com.example.springsocial.model.Product;
 import com.example.springsocial.model.ProductReview;
+import com.example.springsocial.model.SearchResult;
 import com.example.springsocial.model.SimpleLocation;
 import com.example.springsocial.payload.SearchRequest;
 import com.example.springsocial.repository.CompanyRepository;
@@ -44,63 +45,96 @@ public class SearchController {
     @Autowired
     private ProductReviewRepository productReviewRepository;
 
+    @CrossOrigin    
     @GetMapping("/products/search/{location}")
-    public List<Product> getProductsBySearchString(@PathVariable String location) {
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public SearchResult getProductsBySearchString(@PathVariable String location) {
         String state = location.substring(location.length() - 2);
         String city = location.substring(0, location.length() - 3);
         List<Product> foundProducts = new ArrayList();
         city = city.replaceAll("_", " ");
 
         foundProducts = productRepository.getProductsBySearchString(city, state);
-
+        
         for (int i = 0; i < foundProducts.size(); i++) {
             System.out.println("ProductId: " + foundProducts.get(i).getProductId());
             List<ProductReview> pr = productReviewRepository.findByProductId(foundProducts.get(i).getProductId());
             foundProducts.get(i).setProductReviews(pr);
         }
+        System.out.println("Print city " + city);
+        System.out.println("Print state " + state);
+        SearchResult sr = new SearchResult();
+        sr.setProducts(foundProducts);
+        sr.setCount(productRepository.getAllProductCount(city, state));
+        sr.setMaxPrice(productRepository.getAllMaxPrice(city, state));
 
-        return foundProducts;
+        return sr;
     }
 
     @CrossOrigin
     @PostMapping("/products/search")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public List<Product> getProductsBySearchFilters(@RequestBody SearchRequest searchRequest) {
-        System.out.println(searchRequest.getLocation());
-        System.out.println(searchRequest.getDate());
+    public SearchResult getProductsBySearchFilters(@RequestBody SearchRequest searchRequest) {
+        
         System.out.println(searchRequest.getMinPrice());
         System.out.println(searchRequest.getMaxPrice());
-        System.out.println(searchRequest.getSortBy());
-        System.out.println(searchRequest.isInstantBook());
-        System.out.println(searchRequest.getLimit());
-
-              
-        System.out.println(searchRequest.getRow());
 
         searchRequest.getProductTypes().forEach((s) -> {
             System.out.println(s);
         });
-
+       
         String state = searchRequest.getLocation().substring(searchRequest.getLocation().length() - 2);
         String city = searchRequest.getLocation().substring(0, searchRequest.getLocation().length() - 4);
-        List<Product> foundProducts = new ArrayList();
+
         city = city.replaceAll("_", " ");
-        System.out.println(city);
-        System.out.println(state);
-   
+       
+        
+        List<Product> foundProducts = new ArrayList();
+        SearchResult sr = new SearchResult();
+        
+        sr.setCount(100);
+        sr.setMaxPrice(500.99);
         if(searchRequest.getSortBy().equalsIgnoreCase("Newest")) {
-              foundProducts = productRepository.findProductsBySearchFiltersSortedByCreatedOn(city, state ,searchRequest.isInstantBook(),
-                searchRequest.getRow(), 20);
+              foundProducts = productRepository.findProductsBySearchFiltersSortedByCreatedOn(searchRequest.getProductTypes(), city, state,searchRequest.isInstantBook(),
+                searchRequest.getMinPrice(), searchRequest.getMaxPrice(), searchRequest.getRow(), 20);
+              System.out.println("Setting count");
+              sr.setCount(productRepository.getProductCount(searchRequest.getProductTypes(), 
+                      city, state, searchRequest.getMinPrice(), searchRequest.getMaxPrice()
+                      ));
+              System.out.println(sr.getCount());
         } else if (searchRequest.getSortBy().equalsIgnoreCase("Price: Low to High")) {
-            foundProducts = productRepository.findProductsBySearchFiltersPriceAsc(city, state ,searchRequest.isInstantBook(), 
-                searchRequest.getRow(), 20);
+            foundProducts = productRepository.findProductsBySearchFiltersPriceAsc(
+                    searchRequest.getProductTypes(), city, state,
+                    searchRequest.isInstantBook(),  searchRequest.getMinPrice(), 
+                    searchRequest.getMaxPrice(), searchRequest.getRow(), 20);
+             System.out.println("Setting count");
+              sr.setCount(productRepository.getProductCount(
+                      searchRequest.getProductTypes(), city, state, 
+                      searchRequest.getMinPrice(), searchRequest.getMaxPrice()));
+              System.out.println(sr.getCount());
         } else if (searchRequest.getSortBy().equalsIgnoreCase("Price: High to Low") ) {
-            foundProducts = productRepository.findProductsBySearchFiltersSortedByPriceDesc(city, state, searchRequest.isInstantBook(),
-                searchRequest.getRow(), 20);
+            foundProducts = productRepository.findProductsBySearchFiltersSortedByPriceDesc(
+                    searchRequest.getProductTypes(),city, state, searchRequest.isInstantBook(),
+                searchRequest.getMinPrice(), searchRequest.getMaxPrice(),
+                     searchRequest.getRow(), 20);
+           
+             System.out.println("Setting count");
+              sr.setCount(productRepository.getProductCount(
+                      searchRequest.getProductTypes(), city, state,
+                      searchRequest.getMinPrice(), searchRequest.getMaxPrice()));
+              System.out.println(sr.getCount());
         } else {
-             foundProducts = productRepository.findProductsBySearchFilters(city, state, searchRequest.isInstantBook(),
-                searchRequest.getRow(), 20 );
+             foundProducts = productRepository.findProductsBySearchFilters(
+                     searchRequest.getProductTypes(),city, state, searchRequest.isInstantBook(),
+                     searchRequest.getMinPrice(), searchRequest.getMaxPrice(),
+                     searchRequest.getRow(), 20);
+              System.out.println("Setting count");
+              sr.setCount(productRepository.getProductCount(
+                      searchRequest.getProductTypes(), city, state,
+                      searchRequest.getMinPrice(), searchRequest.getMaxPrice()));
+              System.out.println(sr.getCount());
         }
        
         
@@ -110,9 +144,11 @@ public class SearchController {
             List<ProductReview> pr = productReviewRepository.findByProductId(foundProducts.get(i).getProductId());
             foundProducts.get(i).setProductReviews(pr);
         }
+        
+        sr.setProducts(foundProducts);
 
         System.out.println("Maybe we can make this happen!");
-        return foundProducts;
+        return sr;
     }
 
     @GetMapping("/resource/locations")

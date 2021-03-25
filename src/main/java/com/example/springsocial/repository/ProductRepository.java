@@ -48,43 +48,100 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 //  ================
     
     public static final String FIND_FILTERED_PRODUCTS_SORTED_BY_CREATED_ON = "SELECT * FROM products WHERE "
+            + "product_type IN (:pt) AND " 
+            + "price BETWEEN :min AND :max AND "
             + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
             + "JOIN companies c ON p.company_id=c.company_id "
             + "JOIN companies_areas ca ON c.company_id=ca.company_id "
-            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=? "
-            + "AND l.state_abbr = ? AND instant_book = ?) ORDER BY created_on DESC LIMIT ?, ? ;";
+            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=:city "
+            + "AND l.state_abbr = :state AND instant_book = :instantBook) ORDER BY created_on DESC LIMIT :row, :limit ;";
 
     @Query(value = FIND_FILTERED_PRODUCTS_SORTED_BY_CREATED_ON, nativeQuery = true)
-    public List<Product> findProductsBySearchFiltersSortedByCreatedOn(String city, String state, boolean instantBook, int row, int i);
+    public List<Product> findProductsBySearchFiltersSortedByCreatedOn(List<String> pt, 
+            String city, String state, boolean instantBook, double min, double max,
+            int row, int limit);
 
     public static final String FIND_FILTERED_PRODUCTS_SORTED_BY_PRICE_ASC = "SELECT * FROM products WHERE "
+            + "product_type IN (:pt) AND " 
+            + "price BETWEEN :min AND :max AND "
             + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
             + "JOIN companies c ON p.company_id=c.company_id "
             + "JOIN companies_areas ca ON c.company_id=ca.company_id "
-            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=? "
-            + "AND l.state_abbr = ? AND instant_book = ?) ORDER BY price LIMIT ?, ? ;";
+            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=:city "
+            + "AND l.state_abbr = :state AND instant_book = :instantBook) ORDER BY price LIMIT :row, :limit ;";
 
     @Query(value = FIND_FILTERED_PRODUCTS_SORTED_BY_PRICE_ASC, nativeQuery = true)
-    public List<Product> findProductsBySearchFiltersPriceAsc(String city, String state, boolean instantBook, int row, int limit);
+    public List<Product> findProductsBySearchFiltersPriceAsc(List<String> pt, 
+            String city, String state, boolean instantBook, double min, double max,
+            int row, int limit);
 
     public static final String FIND_FILTERED_PRODUCTS_SORTED_BY_PRICE_DESC = "SELECT * FROM products WHERE "
+            + "product_type IN (:pt) AND " 
+            + "price BETWEEN :min AND :max AND "
             + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
             + "JOIN companies c ON p.company_id=c.company_id "
             + "JOIN companies_areas ca ON c.company_id=ca.company_id "
-            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=? "
-            + "AND l.state_abbr = ? AND instant_book = ?) ORDER BY price DESC LIMIT ?, ? ;";
+            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=:city "
+            + "AND l.state_abbr = :state AND instant_book = :instantBook) ORDER BY price DESC LIMIT :row, :limit ;";
 
     @Query(value = FIND_FILTERED_PRODUCTS_SORTED_BY_PRICE_DESC, nativeQuery = true)
-    public List<Product> findProductsBySearchFiltersSortedByPriceDesc(String city, String state, boolean instantBook, int row, int limit);
+    public List<Product> findProductsBySearchFiltersSortedByPriceDesc(List<String> pt,
+            String city, String state, boolean instantBook, double min, double max,
+            int row, int limit);
 
     
     public static final String FIND_FILTERED_PRODUCTS = "SELECT * FROM products WHERE "
+            + "product_type IN (:pt) AND " 
+            + "price BETWEEN :min AND :max AND "
+            + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
+            + "JOIN companies c ON p.company_id=c.company_id "
+            + "JOIN companies_areas ca ON c.company_id=ca.company_id "
+            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=:city "
+            + "AND l.state_abbr = :state AND instant_book = :instantBook) LIMIT :row, :limit ;";
+    @Query(value = FIND_FILTERED_PRODUCTS, nativeQuery = true)
+    public List<Product> findProductsBySearchFilters(List<String> pt, String city, 
+            String state, boolean instantBook, double min, double max, int row, int limit);
+
+    public static final String GET_MAX_PRICE = "SELECT * FROM products WHERE "
+            + "product_type IN (:pt) AND " 
+            + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
+            + "JOIN companies c ON p.company_id=c.company_id "
+            + "JOIN companies_areas ca ON c.company_id=ca.company_id "
+            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=:city "
+            + "AND l.state_abbr = :state AND instant_book = :instantBook) LIMIT :row, :limit ;";
+    @Query(value = GET_MAX_PRICE, nativeQuery = true)
+    public float getMaxPrice(List<String> pt, String city, String state, boolean instantBook, 
+            int row, int limit);
+
+    public static final String GET_PRODUCT_COUNT = "SELECT COUNT(*) FROM products WHERE "
+            + "product_type IN (:pt) AND " 
+            + "price BETWEEN :min AND :max AND "
+            + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
+            + "JOIN companies c ON p.company_id=c.company_id "
+            + "JOIN companies_areas ca ON c.company_id=ca.company_id "
+            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=:city "
+            + "AND l.state_abbr = :state);";
+    @Query(value = GET_PRODUCT_COUNT, nativeQuery = true)
+    public int getProductCount(List<String> pt, String city, String state, 
+            double min, double max);
+
+    public static final String GET_ALL_PRODUCT_COUNT = "SELECT COUNT(*) FROM products WHERE "
             + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
             + "JOIN companies c ON p.company_id=c.company_id "
             + "JOIN companies_areas ca ON c.company_id=ca.company_id "
             + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=? "
-            + "AND l.state_abbr = ? AND instant_book = ?) LIMIT ?, ? ;";
-    @Query(value = FIND_FILTERED_PRODUCTS, nativeQuery = true)
-    public List<Product> findProductsBySearchFilters(String city, String state, boolean instantBook, int row, int i);
+            + "AND l.state_abbr = ?);";
+    @Query(value = GET_ALL_PRODUCT_COUNT, nativeQuery = true)
+    public int getAllProductCount(String city, String state);
+    
+    public static final String GET_ALL_MAX_PRICE = "SELECT MAX(price) FROM products WHERE "
+            + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
+            + "JOIN companies c ON p.company_id=c.company_id "
+            + "JOIN companies_areas ca ON c.company_id=ca.company_id "
+            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=:city "
+            + "AND l.state_abbr = :state);";
+    @Query(value = GET_ALL_MAX_PRICE, nativeQuery = true)
+    public int getAllMaxPrice(String city, String state);
 
+    
 }
