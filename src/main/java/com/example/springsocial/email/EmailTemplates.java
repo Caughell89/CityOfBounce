@@ -207,19 +207,15 @@ public class EmailTemplates {
         msg.setFrom(new InternetAddress("cityofbounce@gmail.com", "City Of Bounce"));
 
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-        msg.setSubject("Please confirm your email address - CityOfBounce");
-        msg.setContent("<html lang='en'><head><meta http-equiv='Content-Type content='text/html; charset=UTF-8'>"
-                + "<meta name='viewport' content='width=device-width, initial-scale=1'>"
-                + "<meta http-equiv='X-UA-Compatible' content='IE=edge'><title></title><style type='text/css'></style></head>"
-                + "<body style='margin:0; padding:0; background-color:#F2F2F2;'>"
-                + "<center><br><br><table width=''100% border='0' cellpadding='0' cellspacing='0' bgcolor='#F2F2F2'>"
-                + "<tr><td><img style='width:40%; height:auto' src='https://res.cloudinary.com/city-of-bounce/image/upload/v1558473737/LogoTealText.png' alt='City Of Bounce Logo'/></td></tr>"
-                + "<tr><td>Hi, " + firstName + "</td></tr>"
+        msg.setSubject("Please confirm your email address");
+        String body = "<table width=''100% border='0' cellpadding='10' cellspacing='0'>"
+                + "<tr style='font-size: 14px;'><td>Hi, " + firstName + "</td></tr>"
                 + "<tr><td>Welcome to the City Of Bounce! In order to get started, you need to confirm your email address.</td></tr>"
                 + "<tr><td><a href='localhost:3000/ConfirmEmail'><div style={'color:white; font-weight:bold; background-color:#1cacc8; border-radius:5px;margin:4px 2px; font-size:16px; text-align:center; cursor:pointer'>Confirm Email</button></a></td></tr>"
                 + "<tr><td>Thanks,</td></tr>"
                 + "<tr><td>The City Of Bounce Team</td></tr>"
-                + "</table></center></body></html>", "text/html");
+                + "</table>";
+                msg.setContent(emailT + body + newFooter, "text/html");
 
         Transport.send(msg);
         System.out.println("Email sent!");

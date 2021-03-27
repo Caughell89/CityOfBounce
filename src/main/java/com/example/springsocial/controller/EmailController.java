@@ -37,6 +37,11 @@ public class EmailController {
         emailTemplates.sendEmailVerification(signUpRequest.getEmail(), signUpRequest.getFirstName());
     }
 
+    @RequestMapping(value = "/sendVEmail")
+    public void sendVEmail(@RequestBody String email) throws AddressException, MessagingException, IOException {
+        System.out.println("Sending email");
+        emailTemplates.sendEmailVerification(email, "John Doe");
+    }
 
 
 }
