@@ -17,65 +17,71 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 
-
 @Entity
 @Table(name = "companies")
 public class Company {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long companyId;
-    
-    @Column(nullable= false)
+
+    @Column(nullable = false,
+            columnDefinition = "bool default false")
+    private Boolean isActive;
+
+    @Column(nullable = false)
     private String paymentId;
 
     @Column(nullable = false)
     private String companyName;
-    
+
     @Column(nullable = false)
     private String location;
 
     @Column(nullable = false)
     private String stateAbbr;
-    
+
     @Column(nullable = false)
     private String companyUrl;
 
     @Column(nullable = false,
-            columnDefinition="varchar(255) default 'https://res.cloudinary.com/city-of-bounce/image/upload/v1603887970/DefaultCompanyLogo.jpg'") 
+            columnDefinition = "varchar(255) default 'https://res.cloudinary.com/city-of-bounce/image/upload/v1603887970/DefaultCompanyLogo.jpg'")
     private String companyLogo;
-    
+
     @CreationTimestamp
     @Column
     private LocalDateTime createdOn;
-    
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="companies_areas",joinColumns=@JoinColumn(name="company_id"),inverseJoinColumns=@JoinColumn(name="zip_id"))
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "companies_areas", joinColumns = @JoinColumn(name = "company_id"), inverseJoinColumns = @JoinColumn(name = "zip_id"))
+    @OrderBy("state_abbr ASC, place ASC, zip_code DESC")
     private List<Location> areas = new ArrayList<>();
-    
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="company_id")
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "company_id")
     private List<Employee> employees = new ArrayList<>();
-    
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="company_id")
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "company_id")
     private List<Product> products = new ArrayList<>();
-    
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="company_id")
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "company_id")
     private List<Hours> hours = new ArrayList<>();
     
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="company_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "company_id")
+    private List<Appointment> appointments = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "company_id")
     private List<CompanyMessage> companyMessages = new ArrayList<>();
-    
-    
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="company_id")
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "company_id")
     @OrderBy("blocked_date asc")
     private List<BlockedDate> blockedDates = new ArrayList<>();
- 
-    
+
     public String getCompanyName() {
         return companyName;
     }
@@ -108,7 +114,6 @@ public class Company {
         this.companyLogo = companyLogo;
     }
 
-
     public LocalDateTime getCreatedOn() {
         return createdOn;
     }
@@ -139,7 +144,7 @@ public class Company {
 
     public void setAreas(List<Location> areas) {
         this.areas = areas;
-    } 
+    }
 
     public List<Employee> getEmployees() {
         return employees;
@@ -188,5 +193,21 @@ public class Company {
     public void setBlockedDates(List<BlockedDate> blockedDates) {
         this.blockedDates = blockedDates;
     }
-    
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
 }

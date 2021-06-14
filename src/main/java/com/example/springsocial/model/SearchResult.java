@@ -6,7 +6,7 @@ public class SearchResult {
     
     private int count;
     
-    private double maxPrice;
+    private Integer maxPrice;
     
     private List<Product> products;
 
@@ -18,11 +18,11 @@ public class SearchResult {
         this.count = count;
     }
 
-    public double getMaxPrice() {
+    public Integer getMaxPrice() {
         return maxPrice;
     }
 
-    public void setMaxPrice(double maxPrice) {
+    public void setMaxPrice(Integer maxPrice) {
         this.maxPrice = maxPrice;
     }
 

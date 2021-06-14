@@ -50,15 +50,22 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     public static final String FIND_FILTERED_PRODUCTS_SORTED_BY_CREATED_ON = "SELECT * FROM products WHERE "
             + "product_type IN (:pt) AND " 
             + "price BETWEEN :min AND :max AND "
-            + "product_id IN (SELECT DISTINCT(product_id) FROM products p "
+            + "product_id IN (SELECT DISTINCT(p.product_id) FROM products p "
             + "JOIN companies c ON p.company_id=c.company_id "
             + "JOIN companies_areas ca ON c.company_id=ca.company_id "
-            + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=:city "
-            + "AND l.state_abbr = :state AND instant_book = :instantBook) ORDER BY created_on DESC LIMIT :row, :limit ;";
+            + "JOIN locations l ON ca.zip_id=l.zip_code  "
+            + "JOIN order_products op ON op.product_id=p.product_id "
+            + "JOIN orders o ON o.order_id = op.order_id "
+            + "WHERE l.place=:city "
+            + "AND l.state_abbr = :state AND instant_book = :instantBook "
+            + "AND DATE(event_date) != :date "
+            + "AND c.is_active != 0) "
+            + "ORDER BY created_on DESC LIMIT :row, :limit ;";
 
     @Query(value = FIND_FILTERED_PRODUCTS_SORTED_BY_CREATED_ON, nativeQuery = true)
     public List<Product> findProductsBySearchFiltersSortedByCreatedOn(List<String> pt, 
             String city, String state, boolean instantBook, double min, double max,
+            String date,
             int row, int limit);
 
     public static final String FIND_FILTERED_PRODUCTS_SORTED_BY_PRICE_ASC = "SELECT * FROM products WHERE "
@@ -141,7 +148,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             + "JOIN locations l ON ca.zip_id=l.zip_code WHERE l.place=:city "
             + "AND l.state_abbr = :state);";
     @Query(value = GET_ALL_MAX_PRICE, nativeQuery = true)
-    public int getAllMaxPrice(String city, String state);
+    public Integer getAllMaxPrice(String city, String state);
 
     
 }

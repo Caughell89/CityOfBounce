@@ -40,8 +40,6 @@ public class Product {
     
     @Column(nullable=false, name="quantity")
     private int quantity;
-   
-    
     
     @Column(nullable = true , name="capacity")
     private int capacity;
@@ -78,6 +76,14 @@ public class Product {
         joinColumns=@JoinColumn(name = "product_id", referencedColumnName = "product_id")
     )
     private List<String> productPhotos;    
+    
+    @OneToMany
+    @JoinColumn(name="product_id")
+    private List<ProductFeature> productFeatures = new ArrayList<>();
+    
+    @OneToMany
+    @JoinColumn(name="product_id")
+    private List<ProductReq> productReqs = new ArrayList<>();
     
     @OneToMany
     @JoinColumn(name="product_id")
@@ -218,6 +224,22 @@ public class Product {
 
     public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public List<ProductFeature> getProductFeatures() {
+        return productFeatures;
+    }
+
+    public void setProductFeatures(List<ProductFeature> productFeatures) {
+        this.productFeatures = productFeatures;
+    }
+
+    public List<ProductReq> getProductReqs() {
+        return productReqs;
+    }
+
+    public void setProductReqs(List<ProductReq> productReqs) {
+        this.productReqs = productReqs;
     }
 
     
